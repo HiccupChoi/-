@@ -34,10 +34,16 @@ public class EmpController {
         return empService.findAllEmp(pageNum,pageSize);
     }
 
-    @RequestMapping("/home")
+    @RequestMapping("/")
     public String toIndex(Model model){
-        model.addAttribute("name","<b>张三</b>");
+        model.addAttribute("name","<b>wssssss</b>");
         return "home1";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
+    public String login(String userName , String password){
+        return userName + " " + password;
     }
 
 }
