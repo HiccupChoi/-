@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" type="text/css" href="../static/css/head.css"/>
-		<link rel="stylesheet" type="text/css" href="../static/css/base.css"/>
-		<link rel="stylesheet" type="text/css" href="../static/css/component.css"/>
-		<link rel="stylesheet" type="text/css" href="../static/css/demo.css"/>
-		<link rel="stylesheet" type="text/css" href="../static/css/content.css"/>
-		<script src="../static/js/modernizr.custom.js"></script>
+		<link rel="stylesheet" type="text/css" href="../css/head.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/base.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/component.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/demo.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/content.css"/>
+		<script src="../js/modernizr.custom.js"></script>
 	</head>
 	<body>
 		<div class="nav">
@@ -21,10 +21,10 @@
 									<div class="content-style-form content-style-form-1">
 										<span class="icon icon-close">关闭</span>
 										<h2>Login</h2>
-										<form>
-											<p><label>Email</label><input type="text" /></p>
-											<p><label>Password</label><input type="password" /></p>
-											<p><button>Login</button></p>
+										<form id="Stu_login" action="/users/login" method="post">
+											<p><label>学号</label><input type="text" name="stu_name"/></p>
+											<p><label>密码</label><input type="password" name="stu_pwd"/></p>
+											<p><button onclick="login()">登录</button></p>
 										</form>
 									</div>
 								</div>
@@ -37,12 +37,14 @@
 								<div>
 									<div class="content-style-form content-style-form-2">
 										<span class="icon icon-close">关闭</span>
-										<h2>Sign Up</h2>
+										<h2>注册</h2>
 										<form>
-											<p><label>Email</label><input type="text" /></p>
-											<p><label>Password</label><input type="password" /></p>
-											<p><label>Repeat Password</label><input type="password" /></p>
-											<p><button>Sign Up</button></p>
+											<p><label>账号:</label><input type="text" /></p>
+                                            <p><label>学生姓名:</label><input type="text" /></p>
+                                            <p><label>激活码</label><input type="text" /></p>
+											<p><label>密码:</label><input type="password" /></p>
+											<p><label>确认密码</label><input type="password" /></p>
+											<p><button>注册</button></p>
 										</form>
 									</div>
 								</div>
@@ -54,9 +56,30 @@
 		</div>
 		
 		<!-- /container -->
-		<script src="../static/js/classie.js"></script>
-		<script src="../static/js/uiMorphingButton_fixed.js"></script>
+		<script src="../js/classie.js"></script>
+		<script src="../js/uiMorphingButton_fixed.js"></script>
+        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script>
+            function login() {
+                $.ajax({
+                    //几个参数需要注意一下
+                    type: "POST",//方法类型
+                    dataType: "json",//预期服务器返回的数据类型
+                    url: "/users/login" ,//url
+                    data: $('#Stu_login').serialize(),
+                    success: function (result) {
+                        alert("111");
+                        console.log(result);//打印服务端返回的数据(调试用)
+                        if (result.resultCode == 200) {
+                            alert("SUCCESS");
+                        }
+                        ;
+                    },
+                    error : function() {
+                        alert("异常！");
+                    }
+                });
+            }
 			(function() {
 				var docElem = window.document.documentElement, didScroll, scrollPosition;
 

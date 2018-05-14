@@ -1,8 +1,6 @@
 package com.vs.service;
 
 
-import com.github.pagehelper.PageInfo;
-import com.vs.entity.Emp;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,8 +8,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface EmpService {
-    int addEmp(Emp emp);
-
-    PageInfo<Emp> findAllEmp(int pageNum, int pageSize);
 
 }

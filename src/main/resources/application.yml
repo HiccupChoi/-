@@ -1,7 +1,7 @@
 spring:
     datasource:
         name: ssm_crud
-        url: jdbc:mysql://120.78.151.233:3306/ssm_crud?useSSL=false
+        url: jdbc:mysql://120.78.151.233:3306/vsms?useSSL=false
         username: root
         password: 123456
         driver-class-name: com.mysql.jdbc.Driver

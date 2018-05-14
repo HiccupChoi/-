@@ -10,11 +10,7 @@ body {
 	font-size: 100%;
 	line-height: 1.25;
 	font-weight: 300;
-	font-family: 'Lato', Arial, sans-serif;
-}
-
-.container {
-	background: #67c2d4;
+	font-family: "微软雅黑";
 }
 
 a, button {
@@ -170,7 +166,8 @@ section.related {
 
 /* Demo mockups */
 .mockup-content {
-	text-align: center;
+	text-align: right;
+	margin-right: 5px;
 }
 
 .demo-4 .mockup-content {

@@ -14,7 +14,6 @@
                 url: "/users/login" ,//url
                 data: $('#form1').serialize(),
                 success: function (result) {
-                    console.log(result);//打印服务端返回的数据(调试用)
                     if (result.resultCode == 200) {
                         alert("SUCCESS");
                     }
@@ -32,8 +31,6 @@
     <div th:fragment="footer">
         © 2016 xx
     </div>
-
-    <div th:utext="${name}"></div>
 
     <form id="form1" action="/users/login" method="post">
         <p>用户名：<input name="userName" type="text" id="txtUserName" tabindex="1" size="15" value=""/></p>

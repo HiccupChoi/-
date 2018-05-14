@@ -10,12 +10,12 @@
 	position: relative;
 	padding: 0 1em;
 	border: none;
-	background-color: #e85657;
-	color: #f9f6e5;
+	/*background-color: #e85657;
+	color: #f9f6e5;*/
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-weight: 700;
-	line-height: 80px;
+	line-height: 34px;
 	overflow: hidden;
 }
 
@@ -34,8 +34,8 @@
 /* Common styles for overlay and modal type (fixed morph) */
 .morph-button-fixed,
 .morph-button-fixed .morph-content {
-	width: 300px;
-	height: 80px;
+	width: 80px;
+	height: 34px;
 }
 
 .morph-button-fixed > button {
@@ -167,20 +167,22 @@
 .morph-button.morph-button-modal-2,
 .morph-button.morph-button-modal-3 {
 	display: inline-block;
-	margin: 10px 15px;
+	margin: 10px 3px;
 }
 
 .morph-button-modal-1 > button,
 .morph-button-modal-1 .morph-content {
 	background-color: #553445;
 }
-
-.morph-button-modal-2 > button,
-.morph-button-modal-2 .morph-content,
 .morph-button-modal-3 > button,
+.morph-button-modal-2 > button{
+	border-radius: 5px;
+}
+.morph-button-modal-2 .morph-content,
 .morph-button-modal-3 .morph-content {
 	background-color: #fef0e3;
 	color: #e75854;
+	border-radius: 5px;
 }
 
 .morph-button-modal-4 {
@@ -223,13 +225,13 @@
 .morph-button-modal-2.open .morph-content {
 	margin: -210px 0 0 -170px;
 	width: 340px;
-	height: 420px;
+	height: 390px;
 }
 
 .morph-button-modal-3.open .morph-content {
 	margin: -255px 0 0 -210px;
 	width: 420px;
-	height: 510px;
+	height: 600px;
 }
 
 .morph-button-modal-3.open .morph-content > div {
