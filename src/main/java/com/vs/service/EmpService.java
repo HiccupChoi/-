@@ -1,6 +1,8 @@
 package com.vs.service;
 
 
+import com.vs.entity.Student;
+import com.vs.result.Result;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,5 +10,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface EmpService {
-
+    public Result login(Student student);
 }

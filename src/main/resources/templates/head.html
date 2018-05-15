@@ -62,21 +62,15 @@
 		<script>
             function login() {
                 $.ajax({
-                    //几个参数需要注意一下
-                    type: "POST",//方法类型
-                    dataType: "json",//预期服务器返回的数据类型
-                    url: "/users/login" ,//url
+                    type: "POST",
+                    dataType: "text",
+                    url: "/users/login" ,
                     data: $('#Stu_login').serialize(),
                     success: function (result) {
-                        alert("111");
-                        console.log(result);//打印服务端返回的数据(调试用)
-                        if (result.resultCode == 200) {
-                            alert("SUCCESS");
-                        }
-                        ;
+						alert(result);
                     },
                     error : function() {
-                        alert("异常！");
+                        alert("网络原因,请重新登录!");
                     }
                 });
             }

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vs.mapper.StudentMapper" >
+  <resultMap id="BaseResultMap" type="com.vs.entity.Student" >
+    <id column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+    <result column="stu_pwd" property="stuPwd" jdbcType="VARCHAR" />
+    <result column="activation_code" property="activationCode" jdbcType="CHAR" />
+    <result column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="specialty_id" property="specialtyId" jdbcType="INTEGER" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    stu_id, stu_name, stu_pwd, activation_code, class_id, specialty_id, gender
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vs.entity.Student" >
+    insert into student (stu_id, stu_name, stu_pwd, 
+      activation_code, class_id, specialty_id, 
+      gender)
+    values (#{stuId,jdbcType=INTEGER}, #{stuName,jdbcType=VARCHAR}, #{stuPwd,jdbcType=VARCHAR}, 
+      #{activationCode,jdbcType=CHAR}, #{classId,jdbcType=INTEGER}, #{specialtyId,jdbcType=INTEGER}, 
+      #{gender,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vs.entity.Student" >
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        stu_id,
+      </if>
+      <if test="stuName != null" >
+        stu_name,
+      </if>
+      <if test="stuPwd != null" >
+        stu_pwd,
+      </if>
+      <if test="activationCode != null" >
+        activation_code,
+      </if>
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="specialtyId != null" >
+        specialty_id,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="stuId != null" >
+        #{stuId,jdbcType=INTEGER},
+      </if>
+      <if test="stuName != null" >
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuPwd != null" >
+        #{stuPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="activationCode != null" >
+        #{activationCode,jdbcType=CHAR},
+      </if>
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="specialtyId != null" >
+        #{specialtyId,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vs.entity.Student" >
+    update student
+    <set >
+      <if test="stuName != null" >
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuPwd != null" >
+        stu_pwd = #{stuPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="activationCode != null" >
+        activation_code = #{activationCode,jdbcType=CHAR},
+      </if>
+      <if test="classId != null" >
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="specialtyId != null" >
+        specialty_id = #{specialtyId,jdbcType=INTEGER},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+    </set>
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vs.entity.Student" >
+    update student
+    set stu_name = #{stuName,jdbcType=VARCHAR},
+      stu_pwd = #{stuPwd,jdbcType=VARCHAR},
+      activation_code = #{activationCode,jdbcType=CHAR},
+      class_id = #{classId,jdbcType=INTEGER},
+      specialty_id = #{specialtyId,jdbcType=INTEGER},
+      gender = #{gender,jdbcType=CHAR}
+    where stu_id = #{stuId,jdbcType=INTEGER}
+  </update>
+</mapper>
