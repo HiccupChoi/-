@@ -22,6 +22,7 @@ public class LoginController {
         Student student = new Student();
         student.setStuName(stu_name);
         student.setStuPwd(stu_pwd);
+
         return empService.login(student);
     }
 
