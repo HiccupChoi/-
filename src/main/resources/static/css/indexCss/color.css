@@ -1,0 +1,172 @@
+body{
+	 background-color: rgba(245,245,245,1);
+}
+.top_bar,.top_meddio_box>h2{
+	background-color: #001934;
+}
+.color_one{
+	background-color: #D17a7a;
+}
+.color_two{
+	background-color: #9f89d5;
+}
+.color_three{
+	background-color: #a981bf;
+}
+.color_four{
+	background-color: #4cadc3;
+}
+.color_five{
+	background-color: #cf919b;
+}
+.color_six{
+	background-color: #a5d7d7;
+}
+.mask{
+	background-color: #002147;
+}
+.three_text_left_box>h3{
+	color: #002147;
+}
+ #back-top {
+	background-color: rgba(0, 0, 0, .3);
+}
+.three_text_left_box>p{
+	color: #002147;
+}
+.three_text_right>h3{
+	color: #002147;
+}
+#back-top:hover {
+	background: #042376;
+	color: #fff;
+}
+.submit{
+	background-color: rgba(0,0,0,0);
+	color: white;
+}
+.mainNav {
+	background: #002147;
+}
+.mainNav .mainNavList li:hover {
+	background: #0d3587;
+}
+.mainNav .mainNavList li ul {
+	background: #042376;
+}
+.notice{
+	background-color: #FFFFFF;
+}
+.notice_left_box{
+	background-color: #f0f0f0;
+}
+.article_one,.article_two{
+	background-color: white;
+}
+.article_one,.article_two  {
+	background: #fafafa;
+}
+.image_text>ul>li{
+	background-color: #fff;
+}
+.top_box,.month{
+	background-color: #002147;
+}
+.top_bar,.mainNav,.top_bottom,.mask,.footer_link,.footer_link_text,.footer{
+	background-color: #001934;
+}
+.new_time{
+	border: 1px solid#002147;
+
+}
+.title_two>a:hover{
+	color: #002147;
+}
+.three{
+	border-top: 2px solid#002147;
+}
+.one>h3>a,.two>h3>a,.three>h3>a{
+	color: #002147;
+}
+.date{
+	color: #002147;
+}
+.top_meddio_box{
+	background-color: rgba(0,0,0,0.3);
+}
+.footer_bottom>p,.footer_bottom>h3{
+	color: #fff;
+}
+.four_essay_title_box_left>h2{
+	border-bottom: 1px solid#002147;
+	color: #002147;
+}
+.four_essay_title_box_right>a:hover{
+	background-color: #002147;
+}
+.good_text{
+	color: #002147;
+}
+.essay_abstract{
+	border-left: 7px solid#002147;
+}
+.Label_box>h4{
+	color: #002147;
+}
+.Label_box>ul>li:hover{
+	background-color: #002147;
+}
+.hot_news_box>p{
+	color: #002147;
+}
+.page .pageItem{
+    border: solid thin #002147;
+}
+.page .pageItemActive{
+    border: solid thin #002147;
+    background-color: #002147;
+    color:white;
+}
+.page .pageItem:hover{
+    border: solid thin #002147;
+    background-color: #0099FF;
+    color:white;
+}
+.page .pageItemDisable{
+    border: solid thin #002147;
+    background-color: #DDDDDD;
+}
+.main_meddio_three>ul>a>li{
+	color: #002147;
+}
+.good_good_a{
+	background-color: #002147;
+}
+.good_good_a:hover{
+	background-color: #25397B;
+}
+.good_phone_a{
+	background-color: #25397b;
+}
+.good_phone_a:hover{
+	background-color: #002147;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

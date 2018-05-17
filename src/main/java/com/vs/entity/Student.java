@@ -1,5 +1,8 @@
 package com.vs.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Student {
     private Integer stuId;
 

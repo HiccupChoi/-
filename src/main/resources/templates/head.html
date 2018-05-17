@@ -5,13 +5,19 @@
 		<link rel="stylesheet" type="text/css" href="../css/head.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/base.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/component.css"/>
-		<link rel="stylesheet" type="text/css" href="../css/demo.css"/>
 		<link rel="stylesheet" type="text/css" href="../css/content.css"/>
-		<script src="../js/modernizr.custom.js"></script>
+		<!--<script src="../js/modernizr.custom.js"></script>-->
 	</head>
 	<body>
 		<div class="nav">
 			<div class="nav_box">
+                <div class="top_bar_left">
+                    <ul>
+                        <li><a href="javascript:;">学校网站</a></li>
+                        <li><a href="javascript:;">学院网站</a></li>
+                        <li><a href="javascript:;">联系我们</a></li>
+                    </ul>
+                </div>
 				<div class="container">
 					<div class="mockup-content">
 						<div class="morph-button morph-button-modal morph-button-modal-2 morph-button-fixed">
@@ -22,15 +28,15 @@
 										<span class="icon icon-close">关闭</span>
 										<h2>Login</h2>
 										<form id="Stu_login" action="/users/login" method="post">
-											<p><label>学号</label><input type="text" name="stu_name"/></p>
-											<p><label>密码</label><input type="password" name="stu_pwd"/></p>
+                                            <span id="userspan"></span>
+											<p><label>学号</label><input type="text" name="stu_name" id="uname"/></p>
+											<p><label>密码</label><input type="password" name="stu_pwd" id="upwd"/></p>
 											<p><button onclick="login()">登录</button></p>
 										</form>
 									</div>
 								</div>
 							</div>
-						</div><!-- morph-button -->
-						<strong class="joiner">or</strong>
+						</div>
 						<div class="morph-button morph-button-modal morph-button-modal-3 morph-button-fixed">
 							<button type="button">注册</button>
 							<div class="morph-content">
@@ -58,21 +64,24 @@
 		<!-- /container -->
 		<script src="../js/classie.js"></script>
 		<script src="../js/uiMorphingButton_fixed.js"></script>
-        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="../js/login.js"></script>
 		<script>
             function login() {
-                $.ajax({
-                    type: "POST",
-                    dataType: "text",
-                    url: "/users/login" ,
-                    data: $('#Stu_login').serialize(),
-                    success: function (result) {
-						alert(result);
-                    },
-                    error : function() {
-                        alert("网络原因,请重新登录!");
-                    }
-                });
+                if (verification()) {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "text",
+                        url: "/users/login" ,
+                        data: $('#Stu_login').serialize(),
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error : function() {
+                            alert("网络原因,请重新登录!");
+                        }
+                    });
+                }
+
             }
 			(function() {
 				var docElem = window.document.documentElement, didScroll, scrollPosition;
@@ -133,7 +142,7 @@
 				} );
 
 				// for demo purposes only
-				[].slice.call( document.querySelectorAll( 'form button' ) ).forEach( function( bttn ) { 
+				[].slice.call( document.querySelectorAll( 'form button' ) ).forEach( function( bttn ) {
 					bttn.addEventListener( 'click', function( ev ) { ev.preventDefault(); } );
 				} );
 			})();

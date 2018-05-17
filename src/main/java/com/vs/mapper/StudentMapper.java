@@ -2,6 +2,7 @@ package com.vs.mapper;
 
 import com.vs.entity.Student;
 
+
 public interface StudentMapper {
     int deleteByPrimaryKey(Integer stuId);
 
