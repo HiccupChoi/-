@@ -13,4 +13,9 @@ public class IndexController {
         model.addAttribute("name","123");
         return "index";
     }
+
+    @RequestMapping(value = "/essay")
+    public String toEssay(Model model){
+        return "essay";
+    }
 }

@@ -24,7 +24,7 @@ img {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none !important;
     color: #232323;
 }
 
