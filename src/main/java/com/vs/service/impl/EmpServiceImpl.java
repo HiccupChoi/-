@@ -16,12 +16,16 @@ public class EmpServiceImpl implements EmpService {
     public Result login(Student student){
         Student studentInfo = empDao.login(student);
         Result result = new Result();
-        if (studentInfo == null){
+        if (studentInfo != null){
             result.setStatus(0);
             result.setMsg("登录成功");
             result.setSuccess(true);
             result.setData(studentInfo);
         } else {
+            result.setStatus(1);
+            result.setMsg("登录失败");
+            result.setSuccess(false);
+            result.setData(null);
         }
         return result;
     }

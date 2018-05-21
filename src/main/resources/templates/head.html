@@ -92,6 +92,9 @@
                         data: $('#Stu_login').serialize(),
                         success: function (result) {
                             alert(result);
+                            for(var i=0;i<document.getElementsByTagName("input").length;i++){
+                                document.getElementsByTagName("input")[i].value="";
+                            }
                         },
                         error : function() {
                             alert("网络原因,请重新登录!");

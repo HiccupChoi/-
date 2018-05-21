@@ -14,6 +14,6 @@ public class EmpDaoImpi implements EmpDao {
 
     @Override
     public Student login(Student student) {
-        return null;
+        return studentMapper.chickStudent(student);
     }
 }

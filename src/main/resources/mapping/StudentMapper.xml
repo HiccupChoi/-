@@ -11,13 +11,20 @@
     <result column="gender" property="gender" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    stu_id, stu_name, stu_pwd, activation_code, class_id, specialty_id, gender
+    stu_id stuId, stu_name stuName, stu_pwd stuPwd, activation_code activationCode, class_id classId, specialty_id specialtyId, gender
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from student
     where stu_id = #{stuId,jdbcType=INTEGER}
+  </select>
+  <select id="chickStudent"  resultType="com.vs.entity.Student" parameterType="com.vs.entity.Student" >
+      select
+      <include refid="Base_Column_List" />
+      from student
+      where stu_name = #{student.stuName}
+      and stu_pwd = #{student.stuPwd}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from student
