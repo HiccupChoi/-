@@ -1,17 +1,17 @@
 package com.vs.service.impl;
 
-import com.vs.dao.EmpDao;
-import com.vs.entity.Student;
+import com.vs.dao.StuDao;
+import com.vs.entity.student.Student;
 import com.vs.result.Result;
-import com.vs.service.EmpService;
+import com.vs.service.StuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service(value = "empService")
-public class EmpServiceImpl implements EmpService {
+public class StuServiceImpl implements StuService {
 
     @Autowired
-    private EmpDao empDao;
+    private StuDao empDao;
 
     public Result login(Student student){
         Student studentInfo = empDao.login(student);

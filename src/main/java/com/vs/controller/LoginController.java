@@ -1,9 +1,9 @@
 package com.vs.controller;
 
-import com.vs.entity.Student;
-import com.vs.mapper.StudentMapper;
+import com.vs.entity.student.Student;
+import com.vs.mapper.studentMapper.StudentMapper;
 import com.vs.result.Result;
-import com.vs.service.EmpService;
+import com.vs.service.StuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @Autowired
-    private EmpService empService;
+    private StuService empService;
 
     @Autowired
     private StudentMapper studentMapper;
@@ -26,7 +26,6 @@ public class LoginController {
         Student student = new Student();
         student.setStuName(stu_name);
         student.setStuPwd(stu_pwd);
-        studentMapper.chickStudent(student);
 
         return empService.login(student);
     }

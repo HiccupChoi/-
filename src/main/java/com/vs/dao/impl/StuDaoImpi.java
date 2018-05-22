@@ -1,16 +1,16 @@
 package com.vs.dao.impl;
 
-import com.vs.dao.EmpDao;
-import com.vs.entity.Student;
-import com.vs.mapper.StudentMapper;
+import com.vs.dao.StuDao;
+import com.vs.entity.student.Student;
+import com.vs.mapper.studentMapper.impl.StudentMapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("empDao")
-public class EmpDaoImpi implements EmpDao {
+public class StuDaoImpi implements StuDao {
 
     @Autowired
-    private StudentMapper studentMapper;
+    private StudentMapperImpl studentMapper;
 
     @Override
     public Student login(Student student) {
