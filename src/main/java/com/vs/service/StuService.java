@@ -1,7 +1,7 @@
 package com.vs.service;
 
 
-import com.vs.entity.student.Student;
+import com.vs.entity.Student;
 import com.vs.result.Result;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.vs.service.impl;
 
 import com.vs.dao.StuDao;
-import com.vs.entity.student.Student;
+import com.vs.entity.Student;
 import com.vs.result.Result;
 import com.vs.service.StuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ public class StuServiceImpl implements StuService {
             result.setStatus(1);
             result.setMsg("登录失败");
             result.setSuccess(false);
+
             result.setData(null);
         }
         return result;

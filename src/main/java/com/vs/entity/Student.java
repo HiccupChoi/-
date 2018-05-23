@@ -1,4 +1,4 @@
-package com.vs.entity.student;
+package com.vs.entity;
 
 public class Student {
     private Integer stuId;

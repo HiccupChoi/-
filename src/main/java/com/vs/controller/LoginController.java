@@ -1,7 +1,6 @@
 package com.vs.controller;
 
-import com.vs.entity.student.Student;
-import com.vs.mapper.studentMapper.StudentMapper;
+import com.vs.entity.Student;
 import com.vs.result.Result;
 import com.vs.service.StuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,6 @@ public class LoginController {
 
     @Autowired
     private StuService empService;
-
-    @Autowired
-    private StudentMapper studentMapper;
 
     @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
     public Result login(String stu_name , String stu_pwd){

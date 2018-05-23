@@ -1,9 +1,9 @@
-package com.vs.mapper.studentMapper;
+package com.vs.mapper;
 
-import com.vs.entity.student.Student;
-import com.vs.mapper.studentMapper.impl.StudentMapperImpl;
+import com.vs.entity.Student;
+import org.apache.ibatis.annotations.Param;
 
-public interface StudentMapper extends StudentMapperImpl {
+public interface StudentMapper{
     int deleteByPrimaryKey(Integer stuId);
 
     int insert(Student record);
@@ -15,4 +15,6 @@ public interface StudentMapper extends StudentMapperImpl {
     int updateByPrimaryKeySelective(Student record);
 
     int updateByPrimaryKey(Student record);
+
+    Student chickStudent(@Param("student") Student student);
 }
