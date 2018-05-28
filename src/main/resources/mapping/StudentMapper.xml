@@ -11,7 +11,7 @@
     <result column="gender" property="gender" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    stu_id, stu_name, stu_pwd, activation_code, class_id, specialty_id, gender
+    stu_id stuId, stu_name stuName, stu_pwd stuPwd, activation_code activationCode, class_id classId, specialty_id specialtyId, gender
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

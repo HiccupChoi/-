@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="../css/head.css"/>
@@ -35,8 +36,8 @@
                         <li><a href="javascript:;">联系我们</a></li>
                     </ul>
                 </div>
-				<div class="container">
-					<div class="mockup-content">
+				<div class="container" id="container">
+					<div class="mockup-content" th:if="${user == null}">
 						<div class="morph-button morph-button-modal morph-button-modal-2 morph-button-fixed">
 							<button type="button">登录</button>
 							<div class="morph-content">
@@ -74,6 +75,24 @@
 							</div>
 						</div>
 					</div>
+                    <div th:if="${user != null}"  class="user_info">
+                        <span th:text="${user.stuName}"><span class="arrow iconfont">&#xe601;</span></span>
+                        <div class="user_info_box">
+                            <div class="triangle"></div>
+                            <div class="myIntegralBox">
+                                <div class="myIntegralBoxPage">
+                                    <div class="textBox">
+                                        <h3>Hiccup</h3>
+                                        <p>班级 : <span>软件工程1417班</span></p>
+                                        <p>指导老师 : <span>香</span></p>
+                                        <p>目前成绩 : <span>良</span></p>
+                                    </div>
+                                    <a>进入个人主页</a>
+                                    <a href="/logout">退出登录</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -91,7 +110,11 @@
                         url: "/users/login" ,
                         data: $('#Stu_login').serialize(),
                         success: function (result) {
-                            alert(result);
+                            var json = eval("("+result+")");//将json类型字符串转换为json对象
+                            if (json.status == 0){
+                                $('#container').load(location.href+" #container");
+                            }
+                            // 清空文本框内容
                             for(var i=0;i<document.getElementsByTagName("input").length;i++){
                                 document.getElementsByTagName("input")[i].value="";
                             }
@@ -101,8 +124,8 @@
                         }
                     });
                 }
-
             }
+
 			(function() {
 				var docElem = window.document.documentElement, didScroll, scrollPosition;
 

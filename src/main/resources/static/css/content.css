@@ -194,6 +194,8 @@
 .content-style-form label {
 	display: block;
 	padding: 10px 0 0;
+	font-size: 15px;
+    font-family: 微软雅黑;
 	color: #d5bba4;
 	text-transform: uppercase;
 	letter-spacing: 1px;
@@ -437,7 +439,6 @@
 	width: 640px;
 	height: 360px;
 	max-width: 100%;
-	background: url(../img/rated.png) no-repeat center center;
 	background-size: 100%;
 }
 
