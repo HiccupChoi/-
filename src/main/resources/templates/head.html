@@ -63,23 +63,26 @@
                                         <span class="icon icon-close">关闭</span>
                                         <h2>家长注册</h2>
                                         <p class="prompt">*该功能只提供学生家长使用，确保学生账号，姓名，激活码三码合一，才能注册成功!</p>
-                                        <form>
+                                        <form id="user_register">
                                             <p>
                                                 <label>学生账号:</label>
-                                                <input type="text" />
+                                                <input type="text" placeholder="11位学生账号" name="UserNo" class="reg_no"/>
+                                                <span class="user_no_hint"></span>
                                             </p>
                                             <p>
                                                 <label>学生姓名:</label>
-                                                <input type="text" />
+                                                <input type="text" placeholder="2-4位中文名" name="UserName" class="reg_name"/>
+                                                <span class="user_name_hint"></span>
                                             </p>
                                             <p>
                                                 <label>激活码:</label>
-                                                <input type="text" />
+                                                <input type="text" placeholder="12位激活码" name="UserCode" class="reg_code"/>
+                                                <span class="user_code_hint"></span>
                                             </p>
                                             <span class="auto_no"></span>
                                             <p>
                                                 <label>密码:</label>
-                                                <input type="password" placeholder="6-16位密码" class="reg_password"/>
+                                                <input type="password" placeholder="6-16位密码" name="UserPwd" class="reg_password"/>
                                                 <span class="password_hint"></span>
                                             </p>
                                             <p>

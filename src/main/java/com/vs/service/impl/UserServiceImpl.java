@@ -51,4 +51,15 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    /**
+     * 检测三码合一
+     * @param UserNo
+     * @param UserName
+     * @param UserCode
+     * @return
+     */
+    public boolean checkThreeCode(String UserNo,String UserName,String UserCode){
+        return userDao.checkThreeCode(UserNo,UserName,UserCode) > 0;
+    }
+
 }

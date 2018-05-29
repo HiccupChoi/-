@@ -40,4 +40,17 @@ public class LoginController {
         request.getSession().removeAttribute("user");
         return "redirect:../";
     }
+
+    /**
+     * 三码合一检测
+     * @param UserNo
+     * @param UserName
+     * @param UserCode
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/checkThreeCode")
+    public boolean checkThreeCode(String UserNo,String UserName,String UserCode){
+        return empService.checkThreeCode(UserNo,UserName,UserCode);
+    }
 }
