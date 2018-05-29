@@ -24,4 +24,11 @@ public interface UserDao {
      * @return
      */
     User findTeachByClassAndQ(Integer classId);
+
+    /**
+     * 查询账号是否存在
+     * @param userCode
+     * @return
+     */
+    int findUserByCode(String userCode);
 }

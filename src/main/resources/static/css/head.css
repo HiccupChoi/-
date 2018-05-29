@@ -127,3 +127,27 @@
 .myIntegralBoxPage>a:hover{
     color: #336699;
 }
+.prompt{
+	font-size: 13px;
+	color: #E75854;
+	cursor: pointer;
+	text-indent: 1em;
+	width: 80%;
+	margin: 10px auto 0 auto;
+	letter-spacing: 1px;
+}
+input::-webkit-input-placeholder { /* WebKit browsers*/
+	　　color:#999;font-size:14px;
+}
+input:-moz-placeholder {  /* Mozilla Firefox 4 to 18*/
+	　　color:#999;font-size:14px;
+}
+input::-moz-placeholder {  /* Mozilla Firefox 19+*/
+	　　color:#999;font-size:14px;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10+*/
+	　　color:#999;font-size:14px;
+}
+.confirm_hint,.password_hint{
+	font-size: 16px;
+}

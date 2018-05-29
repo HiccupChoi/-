@@ -31,14 +31,20 @@ public class UserServiceImpl implements UserService {
             result.setSuccess(true);
             UserClass userClass = userDao.findClass(userInfo.getClassId());
             User teach = userDao.findTeachByClassAndQ(user.getClassId());
-            userInfo.setClassName(userClass.getClassName());
+            if (userClass != null){
+                userInfo.setClassName(userClass.getClassName());
+            }
             if (teach != null){
                 userInfo.setTeachName(teach.getUserName());
             }
             result.setData(userInfo);
         } else {
             result.setStatus(1);
-            result.setMsg("账号密码不匹配");
+            if (userDao.findUserByCode(user.getUserCode()) > 0){
+                result.setMsg("密码错误");
+            } else {
+                result.setMsg("该用户不存在或已被删除");
+            }
             result.setSuccess(false);
             result.setData(null);
         }

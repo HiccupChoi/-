@@ -24,6 +24,12 @@ public interface UserMapper {
     User chickStudent(@Param("user") User user);
 
     /**
+     * 通过账号查询该用户是否存在
+     * @return
+     */
+    int findUserByCode(@Param("userCode") String userCode);
+
+    /**
      * 查找学生对应老师
      * @param classId
      * @return

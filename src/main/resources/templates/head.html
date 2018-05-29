@@ -57,22 +57,43 @@
 						</div>
 						<div class="morph-button morph-button-modal morph-button-modal-3 morph-button-fixed">
 							<button type="button">注册</button>
-							<div class="morph-content">
-								<div>
-									<div class="content-style-form content-style-form-2">
-										<span class="icon icon-close">关闭</span>
-										<h2>注册</h2>
-										<form>
-											<p><label>账号:</label><input type="text" /></p>
-                                            <p><label>学生姓名:</label><input type="text" /></p>
-                                            <p><label>激活码</label><input type="text" /></p>
-											<p><label>密码:</label><input type="password" /></p>
-											<p><label>确认密码</label><input type="password" /></p>
-											<p><button>注册</button></p>
-										</form>
-									</div>
-								</div>
-							</div>
+                            <div class="morph-content">
+                                <div>
+                                    <div class="content-style-form content-style-form-2">
+                                        <span class="icon icon-close">关闭</span>
+                                        <h2>家长注册</h2>
+                                        <p class="prompt">*该功能只提供学生家长使用，确保学生账号，姓名，激活码三码合一，才能注册成功!</p>
+                                        <form>
+                                            <p>
+                                                <label>学生账号:</label>
+                                                <input type="text" />
+                                            </p>
+                                            <p>
+                                                <label>学生姓名:</label>
+                                                <input type="text" />
+                                            </p>
+                                            <p>
+                                                <label>激活码:</label>
+                                                <input type="text" />
+                                            </p>
+                                            <span class="auto_no"></span>
+                                            <p>
+                                                <label>密码:</label>
+                                                <input type="password" placeholder="6-16位密码" class="reg_password"/>
+                                                <span class="password_hint"></span>
+                                            </p>
+                                            <p>
+                                                <label>确认密码:</label>
+                                                <input type="password" placeholder="确认密码" class="reg_confirm"/>
+                                                <span class="confirm_hint"></span>
+                                            </p>
+                                            <p>
+                                                <button class="red_button">注册</button>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 					</div>
                     <div th:if="${user != null}"  class="user_info">
@@ -90,8 +111,9 @@
                                             <span th:if="${user.authority == '1'}"> / 同学</span>
                                             <span th:if="${user.authority == '2'}"> / 老师</span>
                                             <span th:if="${user.authority == '3'}"> / 管理员</span>
+                                            <span th:if="${user.authority == '4'}">同学的家长</span>
                                         </h3>
-                                        <p>班级 ： <span  th:text="${user.className}"></span></p>
+                                        <p th:if="${user.authority == '1' || user.authority == '2'}">班级 ： <span  th:text="${user.className}"></span></p>
                                         <p th:if="${user.authority == '1'}">指导老师 ： <span  th:text="${user.teachName}"></span></p>
                                         <p th:if="${user.authority == '1'}">激活码 ： <span th:text="${user.activationCode}"></span></p>
                                     </div>
@@ -109,6 +131,7 @@
 		<script src="../js/classie.js"></script>
 		<script src="../js/uiMorphingButton_fixed.js"></script>
         <script src="../js/login.js"></script>
+        <script src="../js/JavaScript.js" type="text/javascript"></script>
 		<script>
             function login() {
                 if (verification()) {
@@ -119,7 +142,7 @@
                         data: $('#Stu_login').serialize(),
                         success: function (result) {
                             var json = eval("("+result+")");//将json类型字符串转换为json对象
-                            if (json.status == 0){
+                            if (json.success){
                                 $('#container').load(location.href+" #container");
                             }else{
                                 document.getElementById("userspan").innerHTML = json.msg;

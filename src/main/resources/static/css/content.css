@@ -176,7 +176,7 @@
 
 .content-style-form h2 {
 	margin: 0;
-	padding: 0.4em 0 0.3em;
+	padding: 0.4em 0 0 0;
 	text-align: center;
 	font-weight: 300;
 	font-size: 3.5em;
@@ -194,18 +194,18 @@
 .content-style-form label {
 	display: block;
 	padding: 10px 0 0;
-	font-size: 15px;
-    font-family: 微软雅黑;
 	color: #d5bba4;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-weight: bold;
+	margin-left: 2%;
 }
 
 .content-style-form input[type="text"],
 .content-style-form input[type="password"] {
 	padding: 5px;
-	width: 100%;
+    width: 90%;
+    margin-left: 3%;
 	border: 2px solid #ebd3bd;
 	background: transparent;
 	color: #b09a86;

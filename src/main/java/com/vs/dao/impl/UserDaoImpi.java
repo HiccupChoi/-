@@ -31,4 +31,9 @@ public class UserDaoImpi implements UserDao {
     public User findTeachByClassAndQ(Integer classId){
         return userMapper.findTeachByClassAndQ(classId);
   }
+
+    @Override
+    public int findUserByCode(String userCode){
+        return userMapper.findUserByCode(userCode);
+    }
 }

@@ -20,4 +20,12 @@
         authority = 2
         and dl != 1
     </select>
+    <select id="findUserByCode"  resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select
+        count(*)
+        from user
+        where user_code = #{userCode}
+        and dl != 1
+    </select>
+
 </mapper>
