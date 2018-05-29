@@ -2,7 +2,7 @@
 	position: relative;
 	width: 100%;
 	height: 50px;
-	background-color: #001934;
+	background-color: #002147;
 }
 .nav_box{
 	
@@ -27,7 +27,7 @@
 	margin-right: 100px;
 	text-align: center;
 	cursor: pointer;
-	background-color: #001934;
+	background-color: #002147;
 	transition: all .5s;
 }
 .user_info>span{
@@ -73,20 +73,20 @@
 	margin-left: 104px;
 	border-left: 8px solid transparent;
 	border-right: 8px solid transparent;
-	border-bottom: 14px solid#001934;
+	border-bottom: 14px solid#002147;
 	z-index: -1 !important;
 }
 .myIntegralBox {
 	width: 235px;
-	height: 300px;
-	background-color: #001934;
+	/*height: 300px;*/
+	background-color: #002147;
 	float: left;
 	margin-top: -5px;
 	border-radius: 5px;
 }
 .myIntegralBoxPage {
 	width: 84%;
-	height: 250px;
+	/*height: 250px;*/
 	margin: 25px auto;
 }
 .textBox {
@@ -95,9 +95,13 @@
 	z-index: 99;
 }
 .textBox>h3 {
-	font-size: 20px;
-	margin-bottom: 10px;
-	color: #ccc;
+    font-size: 25px;
+    margin-bottom: 6px;
+    color: #ccc;
+}
+.textBox>h3>span{
+    color: #eeeeee;
+    font-size: 14px;
 }
 .textBox>p {
 	margin: 0 0 4px 0;
@@ -108,12 +112,17 @@
 	line-height: 30px;
 	overflow: hidden;
 }
+.span_h{
+    font-size: 20px !important;
+    color: #fff !important;
+}
 .myIntegralBoxPage>a{
 	color: #ccc;
 	font-size: 16px;
 	transition: all 0.3s;
 	display: block;
 	width: 100%;
+    line-height: 40px;
 }
 .myIntegralBoxPage>a:hover{
     color: #336699;

@@ -12,6 +12,7 @@ public class IndexController {
 
     @RequestMapping(value = "/")
     public String ToIndex(Model model, HttpServletRequest request){
+
         if (request.getSession().getAttribute("user") != null){
             model.addAttribute("user",request.getSession().getAttribute("user"));
         }

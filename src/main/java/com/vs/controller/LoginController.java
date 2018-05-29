@@ -1,8 +1,8 @@
 package com.vs.controller;
 
-import com.vs.entity.Student;
+import com.vs.entity.User;
 import com.vs.result.Result;
-import com.vs.service.StuService;
+import com.vs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,22 +18,26 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     @Autowired
-    private StuService empService;
+    private UserService empService;
 
     @ResponseBody
     @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
-    public Result login(String stu_name , String stu_pwd, HttpServletRequest request){
-        Student student = new Student();
-        student.setStuName(stu_name);
-        student.setStuPwd(stu_pwd);
-        student = (Student) empService.login(student).getData();
-        request.getSession().setAttribute("user", student);
-        return empService.login(student);
+    public Result login(String user_code , String user_pwd, HttpServletRequest request){
+        User user = new User();
+        user.setUserCode(user_code);
+        user.setUserPwd(user_pwd);
+        Result result = empService.login(user);
+        if (result.getData() != null){
+            user = (User) result.getData();
+            request.setAttribute("user",user);
+            request.getSession().setAttribute("user", user);
+        }
+        return result;
     }
 
-    @RequestMapping(value = "/logout")
+    @RequestMapping(value = "/users/logout")
     public String logout(HttpServletRequest request){
         request.getSession().removeAttribute("user");
-        return "index";
+        return "redirect:../";
     }
 }

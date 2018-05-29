@@ -47,8 +47,8 @@
 										<h2>Login</h2>
 										<form id="Stu_login" action="/users/login" method="post">
                                             <span id="userspan"></span>
-											<p><label>学号</label><input type="text" name="stu_name" id="uname"/></p>
-											<p><label>密码</label><input type="password" name="stu_pwd" id="upwd"/></p>
+											<p><label>学号</label><input type="text" name="user_code" id="uname"/></p>
+											<p><label>密码</label><input type="password" name="user_pwd" id="upwd"/></p>
 											<p><button onclick="login()">登录</button></p>
 										</form>
 									</div>
@@ -76,19 +76,27 @@
 						</div>
 					</div>
                     <div th:if="${user != null}"  class="user_info">
-                        <span th:text="${user.stuName}"><span class="arrow iconfont">&#xe601;</span></span>
+                        <span>
+                            <span th:text="${user.userName}"></span>
+                            <span class="arrow iconfont">&#xe601;</span>
+                        </span>
                         <div class="user_info_box">
                             <div class="triangle"></div>
                             <div class="myIntegralBox">
                                 <div class="myIntegralBoxPage">
                                     <div class="textBox">
-                                        <h3>Hiccup</h3>
-                                        <p>班级 : <span>软件工程1417班</span></p>
-                                        <p>指导老师 : <span>香</span></p>
-                                        <p>目前成绩 : <span>良</span></p>
+                                        <h3>
+                                            <span th:text="${user.userName}" class="span_h">></span>
+                                            <span th:if="${user.authority == '1'}"> / 同学</span>
+                                            <span th:if="${user.authority == '2'}"> / 老师</span>
+                                            <span th:if="${user.authority == '3'}"> / 管理员</span>
+                                        </h3>
+                                        <p>班级 ： <span  th:text="${user.className}"></span></p>
+                                        <p th:if="${user.authority == '1'}">指导老师 ： <span  th:text="${user.teachName}"></span></p>
+                                        <p th:if="${user.authority == '1'}">激活码 ： <span th:text="${user.activationCode}"></span></p>
                                     </div>
                                     <a>进入个人主页</a>
-                                    <a href="/logout">退出登录</a>
+                                    <a href="/users/logout">退出登录</a>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +121,8 @@
                             var json = eval("("+result+")");//将json类型字符串转换为json对象
                             if (json.status == 0){
                                 $('#container').load(location.href+" #container");
+                            }else{
+                                document.getElementById("userspan").innerHTML = json.msg;
                             }
                             // 清空文本框内容
                             for(var i=0;i<document.getElementsByTagName("input").length;i++){

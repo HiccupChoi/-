@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vs.mapper.UserClassMapper" >
+  <resultMap id="BaseResultMap" type="com.vs.entity.UserClass" >
+    <id column="class_id" property="classId" jdbcType="INTEGER" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    class_id classId , class_name className
+  </sql>
+  <select id="selectByPrimaryKey" resultType="com.vs.entity.UserClass" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_class
+    where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_class
+    where class_id = #{classId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vs.entity.UserClass" >
+    insert into user_class (class_id, class_name)
+    values (#{classId,jdbcType=INTEGER}, #{className,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vs.entity.UserClass" >
+    insert into user_class
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        class_id,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classId != null" >
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vs.entity.UserClass" >
+    update user_class
+    <set >
+      <if test="className != null" >
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vs.entity.UserClass" >
+    update user_class
+    set class_name = #{className,jdbcType=VARCHAR}
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+</mapper>

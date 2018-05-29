@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vs.mapper.UserMapper">
+    <select id="chickStudent"  resultType="com.vs.entity.User" parameterType="com.vs.entity.User" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where user_code = #{user.userCode}
+        and user_pwd = #{user.userPwd}
+        and dl != 1
+    </select>
+    <select id="findTeachByClassAndQ"  resultType="com.vs.entity.User" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where
+        <if test="classId != null and  classId != -1 ">
+            class_id = #{classId,jdbcType=INTEGER} and
+        </if>
+        authority = 2
+        and dl != 1
+    </select>
+</mapper>
