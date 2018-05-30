@@ -151,3 +151,8 @@ input:-ms-input-placeholder { /* Internet Explorer 10+*/
 .confirm_hint,.password_hint{
 	font-size: 16px;
 }
+.auto_no{
+    margin-left: 3%;
+    height: 16px;
+    width: 90%;
+}

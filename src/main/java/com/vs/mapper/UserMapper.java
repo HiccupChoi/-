@@ -36,5 +36,5 @@ public interface UserMapper {
      */
     User findTeachByClassAndQ(@Param("classId") Integer classId);
 
-    Integer checkThreeCode(@Param("UserNo") String UserNo,@Param("UserName") String UserName,@Param("UserCode") String UserCode);
+    Integer checkThreeCode(@Param("user") User user);
 }

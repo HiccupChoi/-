@@ -34,10 +34,8 @@ public interface UserDao {
 
     /**
      * 检测三码合一
-     * @param UserNo
-     * @param UserName
-     * @param UserCode
+     * @param user
      * @return
      */
-    Integer checkThreeCode(String UserNo,String UserName,String UserCode);
+    Integer checkThreeCode(User user);
 }

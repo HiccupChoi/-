@@ -4,6 +4,7 @@ var varconfirm_Boolean = false;
 var user_Boolean = false;
 var user_name_Boolean = false;
 var user_code_Boolean = false;
+var checkThree_Boolean = false;
 // password
 $('.reg_password').blur(function() {
 	if((/^[a-zA-Z0-9_-]{6,16}$/).test($(".reg_password").val())) {
@@ -70,17 +71,23 @@ function checkThreeCode(){
         url: "/checkThreeCode" ,
         data: $('#user_register').serialize(),
         success: function (result) {
-
+            var json = eval("("+result+")");//将json类型字符串转换为json对象
+            $('.auto_no').html(json.msg);
+            if (json.success){
+                checkThree_Boolean = true;
+            } else {
+                checkThree_Boolean = false;
+            }
         },
         error : function() {
-            alert("网络原因,请重新登录!");
+            alert("网络故障,请重试!");
         }
     });
 }
 
 // click
 $('.red_button').click(function() {
-	if(password_Boolean && varconfirm_Boolean && user_code_Boolean && user_name_Boolean && user_Boolean == true) {
+	if(password_Boolean && varconfirm_Boolean && user_code_Boolean && user_name_Boolean && user_Boolean && checkThree_Boolean == true) {
 
         $.ajax({
             type: "POST",

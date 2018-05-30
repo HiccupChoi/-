@@ -38,7 +38,7 @@ public class UserDaoImpi implements UserDao {
     }
 
     @Override
-    public Integer checkThreeCode(String UserNo,String UserName,String UserCode){
-        return userMapper.checkThreeCode(UserNo,UserName,UserCode);
+    public Integer checkThreeCode(User user){
+        return userMapper.checkThreeCode(user);
     }
 }

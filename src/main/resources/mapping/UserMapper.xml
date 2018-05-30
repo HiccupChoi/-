@@ -3,18 +3,19 @@
 <mapper namespace="com.vs.mapper.UserMapper" >
   <resultMap id="BaseResultMap" type="com.vs.entity.User" >
     <id column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+    <result column="user_code" property="userCode" jdbcType="CHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="CHAR" />
     <result column="class_id" property="classId" jdbcType="INTEGER" />
     <result column="activation_code" property="activationCode" jdbcType="CHAR" />
+    <result column="times" property="times" jdbcType="INTEGER" />
     <result column="authority" property="authority" jdbcType="CHAR" />
     <result column="dl" property="dl" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_id userId, user_code userCode, user_name userName, user_pwd userPwd, gender Gender, class_id classId, activation_code activationCode, authority Authority,
-    dl Dl
+    user_id userId, user_code userCode, user_name userName, user_pwd userPwd, gender gender, class_id classId, activation_code activationCode, times times,
+    authority authority, dl dl
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -29,12 +30,12 @@
   <insert id="insert" parameterType="com.vs.entity.User" >
     insert into user (user_id, user_code, user_name, 
       user_pwd, gender, class_id, 
-      activation_code, authority, dl
-      )
-    values (#{userId,jdbcType=INTEGER}, #{userCode,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      activation_code, times, authority, 
+      dl)
+    values (#{userId,jdbcType=INTEGER}, #{userCode,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR}, 
       #{userPwd,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{classId,jdbcType=INTEGER}, 
-      #{activationCode,jdbcType=CHAR}, #{authority,jdbcType=CHAR}, #{dl,jdbcType=CHAR}
-      )
+      #{activationCode,jdbcType=CHAR}, #{times,jdbcType=INTEGER}, #{authority,jdbcType=CHAR}, 
+      #{dl,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.vs.entity.User" >
     insert into user
@@ -60,6 +61,9 @@
       <if test="activationCode != null" >
         activation_code,
       </if>
+      <if test="times != null" >
+        times,
+      </if>
       <if test="authority != null" >
         authority,
       </if>
@@ -72,7 +76,7 @@
         #{userId,jdbcType=INTEGER},
       </if>
       <if test="userCode != null" >
-        #{userCode,jdbcType=VARCHAR},
+        #{userCode,jdbcType=CHAR},
       </if>
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
@@ -89,6 +93,9 @@
       <if test="activationCode != null" >
         #{activationCode,jdbcType=CHAR},
       </if>
+      <if test="times != null" >
+        #{times,jdbcType=INTEGER},
+      </if>
       <if test="authority != null" >
         #{authority,jdbcType=CHAR},
       </if>
@@ -101,7 +108,7 @@
     update user
     <set >
       <if test="userCode != null" >
-        user_code = #{userCode,jdbcType=VARCHAR},
+        user_code = #{userCode,jdbcType=CHAR},
       </if>
       <if test="userName != null" >
         user_name = #{userName,jdbcType=VARCHAR},
@@ -118,6 +125,9 @@
       <if test="activationCode != null" >
         activation_code = #{activationCode,jdbcType=CHAR},
       </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=INTEGER},
+      </if>
       <if test="authority != null" >
         authority = #{authority,jdbcType=CHAR},
       </if>
@@ -129,12 +139,13 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.vs.entity.User" >
     update user
-    set user_code = #{userCode,jdbcType=VARCHAR},
+    set user_code = #{userCode,jdbcType=CHAR},
       user_name = #{userName,jdbcType=VARCHAR},
       user_pwd = #{userPwd,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=CHAR},
       class_id = #{classId,jdbcType=INTEGER},
       activation_code = #{activationCode,jdbcType=CHAR},
+      times = #{times,jdbcType=INTEGER},
       authority = #{authority,jdbcType=CHAR},
       dl = #{dl,jdbcType=CHAR}
     where user_id = #{userId,jdbcType=INTEGER}

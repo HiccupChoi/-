@@ -18,7 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
 
     @Autowired
-    private UserService empService;
+    private UserService userService;
+
 
     @ResponseBody
     @RequestMapping(value = "/users/login", method = {RequestMethod.POST})
@@ -26,7 +27,7 @@ public class LoginController {
         User user = new User();
         user.setUserCode(user_code);
         user.setUserPwd(user_pwd);
-        Result result = empService.login(user);
+        Result result = userService.login(user);
         if (result.getData() != null){
             user = (User) result.getData();
             request.setAttribute("user",user);
@@ -43,14 +44,16 @@ public class LoginController {
 
     /**
      * 三码合一检测
-     * @param UserNo
+     * @param userCode
      * @param UserName
-     * @param UserCode
+     * @param activationCode
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/checkThreeCode")
-    public boolean checkThreeCode(String UserNo,String UserName,String UserCode){
-        return empService.checkThreeCode(UserNo,UserName,UserCode);
+    public Result checkThreeCode(String userCode,String UserName,String activationCode){
+        return userService.checkThreeCode(userCode,UserName,activationCode);
     }
+
+
 }

@@ -27,13 +27,13 @@
         where user_code = #{userCode}
         and dl != 1
     </select>
-    <select id="checkThreeCode"  resultType="java.lang.Integer" parameterType="java.lang.String" >
+    <select id="checkThreeCode"  resultType="java.lang.Integer" parameterType="com.vs.entity.User" >
         select
         count(*)
         from user
-        where user_code = #{UserNo}
-        and user_name = #{UserName}
-        and activation_code = #{UserCode}
+        where user_code = #{user.userCode,jdbcType=VARCHAR}
+        and user_name = #{user.userName,jdbcType=VARCHAR}
+        and activation_code = #{user.activationCode,jdbcType=VARCHAR}
         and dl != 1
     </select>
 

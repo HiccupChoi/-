@@ -15,6 +15,8 @@ public class User {
 
     private String activationCode;
 
+    private Integer times;
+
     private String authority;
 
     private String dl;
@@ -93,6 +95,14 @@ public class User {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode == null ? null : activationCode.trim();
+    }
+
+    public Integer getTimes() {
+        return times;
+    }
+
+    public void setTimes(Integer times) {
+        this.times = times;
     }
 
     public String getAuthority() {

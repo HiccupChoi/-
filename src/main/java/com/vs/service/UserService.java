@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     public Result login(User user);
 
-    public boolean checkThreeCode(String UserNo,String UserName,String UserCode);
+    public Result checkThreeCode(String userCode,String UserName,String activationCode);
 }

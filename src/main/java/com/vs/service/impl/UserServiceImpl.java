@@ -17,6 +17,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    private String parentCode;
+
     /**
      * 查询登录用户信息
      * @param user
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService {
             result.setMsg("登录成功");
             result.setSuccess(true);
             UserClass userClass = userDao.findClass(userInfo.getClassId());
-            User teach = userDao.findTeachByClassAndQ(user.getClassId());
+            User teach = userDao.findTeachByClassAndQ(userInfo.getClassId());
             if (userClass != null){
                 userInfo.setClassName(userClass.getClassName());
             }
@@ -53,13 +55,28 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 检测三码合一
-     * @param UserNo
+     * @param userCode
      * @param UserName
-     * @param UserCode
+     * @param activationCode
      * @return
      */
-    public boolean checkThreeCode(String UserNo,String UserName,String UserCode){
-        return userDao.checkThreeCode(UserNo,UserName,UserCode) > 0;
+    public Result checkThreeCode(String userCode, String UserName, String activationCode){
+        User user = new User();
+        user.setUserCode(userCode);
+        user.setUserName(UserName);
+        user.setActivationCode(activationCode);
+        Result result = new Result();
+        if (userDao.checkThreeCode(user) > 0){
+            parentCode = "4"+userCode.substring(1);
+            result.setStatus(0);
+            result.setSuccess(true);
+            result.setMsg("三码匹配成功，您即将创建的账号为："+parentCode+"!");
+        } else {
+            result.setStatus(1);
+            result.setSuccess(false);
+            result.setMsg("三码匹配失败，请仔细检查您的输入！");
+        }
+        return result;
     }
 
 }
