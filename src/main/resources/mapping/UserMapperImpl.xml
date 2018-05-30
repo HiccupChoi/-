@@ -27,6 +27,13 @@
         where user_code = #{userCode}
         and dl != 1
     </select>
+    <select id="selectByUserCode"  resultType="com.vs.entity.User" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where user_code = #{userCode}
+        and dl != 1
+    </select>
     <select id="checkThreeCode"  resultType="java.lang.Integer" parameterType="com.vs.entity.User" >
         select
         count(*)
@@ -36,5 +43,18 @@
         and activation_code = #{user.activationCode,jdbcType=VARCHAR}
         and dl != 1
     </select>
+    <select id="checkThreeCodeTimes"  resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select
+        times
+        from user
+        where user_code = #{userCode,jdbcType=VARCHAR}
+        and dl != 1
+    </select>
+    <update id="subUserTimesOne" parameterType="com.vs.entity.User" >
+        update user
+        set times = #{user.times,jdbcType=INTEGER}
+        where user_code = #{user.userCode,jdbcType=INTEGER}
+        AND dl != 1
+    </update>
 
 </mapper>

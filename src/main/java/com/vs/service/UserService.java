@@ -10,4 +10,6 @@ public interface UserService {
     public Result login(User user);
 
     public Result checkThreeCode(String userCode,String UserName,String activationCode);
+
+    public Result register(String userCode,String userName,String UserPwd);
 }

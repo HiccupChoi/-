@@ -92,22 +92,19 @@ $('.red_button').click(function() {
         $.ajax({
             type: "POST",
             dataType: "text",
-            url: "/users/register" ,
+            url: "/register" ,
             data: $('#user_register').serialize(),
             success: function (result) {
-                var json = eval("("+result+")");//将json类型字符串转换为json对象
+                var json = eval("("+result+")");
                 if (json.success){
-                    $('#container').load(location.href+" #container");
+                    // 清空文本框内容
+                    alert(json.msg);
                 }else{
                     document.getElementById("userspan").innerHTML = json.msg;
                 }
-                // 清空文本框内容
-                for(var i=0;i<document.getElementsByTagName("input").length;i++){
-                    document.getElementsByTagName("input")[i].value="";
-                }
             },
             error : function() {
-                alert("网络原因,请重新登录!");
+                alert("网络故障,请重试!");
             }
         });
 

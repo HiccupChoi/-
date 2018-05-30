@@ -38,4 +38,31 @@ public interface UserDao {
      * @return
      */
     Integer checkThreeCode(User user);
+
+    /**
+     * 家长账号注册
+     * @param record
+     * @return
+     */
+    int insertSelective(User record);
+
+    /**
+     * 通过学号查找学生信息
+     * @param userCode
+     * @return
+     */
+    User selectByUserCode(String userCode);
+
+    /**
+     * 查询学生激活码可用次数
+     * @param userCode
+     * @return
+     */
+    Integer checkThreeCodeTimes(String userCode);
+
+    /**
+     * 家长账号注册后学生激活码次数减一
+     * @param user
+     */
+    void subUserTimesOne(User user);
 }

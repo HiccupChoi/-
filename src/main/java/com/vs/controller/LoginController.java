@@ -55,5 +55,11 @@ public class LoginController {
         return userService.checkThreeCode(userCode,UserName,activationCode);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/register",method = {RequestMethod.POST})
+    public Result register(String userCode,String UserName,String UserPwd){
+        return userService.register(userCode,UserName,UserPwd);
+    }
+
 
 }

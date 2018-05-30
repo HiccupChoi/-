@@ -37,4 +37,12 @@ public interface UserMapper {
     User findTeachByClassAndQ(@Param("classId") Integer classId);
 
     Integer checkThreeCode(@Param("user") User user);
+
+    Integer checkThreeCodeTimes(@Param("userCode") String userCode);
+
+    User selectByUserCode(@Param("userCode") String userCode);
+
+    void subUserTimesOne(@Param("userCode") String userCode);
+
+    void subUserTimesOne(@Param("user") User user);
 }

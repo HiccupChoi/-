@@ -3,6 +3,7 @@ package com.vs.service.impl;
 import com.vs.dao.UserDao;
 import com.vs.entity.User;
 import com.vs.entity.UserClass;
+import com.vs.enums.AuthorityEnum;
 import com.vs.result.Result;
 import com.vs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    private String parentCode;
+    private static String parentCode;
 
     /**
      * 查询登录用户信息
@@ -66,15 +67,52 @@ public class UserServiceImpl implements UserService {
         user.setUserName(UserName);
         user.setActivationCode(activationCode);
         Result result = new Result();
-        if (userDao.checkThreeCode(user) > 0){
-            parentCode = "4"+userCode.substring(1);
+        Integer count =userDao.checkThreeCode(user);
+        Integer times = userDao.checkThreeCodeTimes(userCode);
+        if (count > 0 && times > 0){
+            parentCode = (6 - times) + userCode.substring(1);
             result.setStatus(0);
             result.setSuccess(true);
             result.setMsg("三码匹配成功，您即将创建的账号为："+parentCode+"!");
+        } else if (times == 0){
+            result.setStatus(1);
+            result.setSuccess(false);
+            result.setMsg("该生激活码次数已经使用两次！");
         } else {
             result.setStatus(1);
             result.setSuccess(false);
             result.setMsg("三码匹配失败，请仔细检查您的输入！");
+        }
+        return result;
+    }
+
+    /**
+     * 家长账号注册
+     * @param userCode
+     * @param UserPwd
+     * @return
+     */
+    public Result register(String userCode,String userName,String UserPwd){
+        User user = new User();
+        Integer times = userDao.checkThreeCodeTimes(userCode);
+        String code = (6 - times) + userCode.substring(1);
+        user.setUserCode(code);
+        user.setUserName(userName);
+        user.setUserPwd(UserPwd);
+        user.setAuthority(AuthorityEnum.PARENTS.getAuthority_code());
+        Integer success = userDao.insertSelective(user);
+        Result result = new Result();
+        if (success > 0){
+            user.setTimes(--times);
+            user.setUserCode(userCode);
+            userDao.subUserTimesOne(user);
+            result.setStatus(0);
+            result.setSuccess(true);
+            result.setMsg("注册成功，账号为" + code);
+        } else {
+            result.setStatus(1);
+            result.setSuccess(false);
+            result.setMsg("注册失败！");
         }
         return result;
     }

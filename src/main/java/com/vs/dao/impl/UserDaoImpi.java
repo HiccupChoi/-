@@ -41,4 +41,23 @@ public class UserDaoImpi implements UserDao {
     public Integer checkThreeCode(User user){
         return userMapper.checkThreeCode(user);
     }
+
+    @Override
+    public int insertSelective(User record){
+        return userMapper.insertSelective(record);
+    }
+
+    @Override
+    public User selectByUserCode(String userCode){
+        return userMapper.selectByUserCode(userCode);
+    }
+
+    @Override
+    public Integer checkThreeCodeTimes(String userCode){
+        return userMapper.checkThreeCodeTimes(userCode);
+    }
+
+    public void subUserTimesOne(User user){
+        userMapper.subUserTimesOne(user);
+    }
 }
