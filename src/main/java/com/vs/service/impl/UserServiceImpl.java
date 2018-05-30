@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
             userDao.subUserTimesOne(user);
             result.setStatus(0);
             result.setSuccess(true);
-            result.setMsg("注册成功，账号为" + code);
+            result.setMsg("注册成功，账号为" + code + "!请牢记，然后点击确定按钮！");
         } else {
             result.setStatus(1);
             result.setSuccess(false);

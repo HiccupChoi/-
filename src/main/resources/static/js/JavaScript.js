@@ -97,8 +97,8 @@ $('.red_button').click(function() {
             success: function (result) {
                 var json = eval("("+result+")");
                 if (json.success){
-                    // 清空文本框内容
                     alert(json.msg);
+                    location.reload();
                 }else{
                     document.getElementById("userspan").innerHTML = json.msg;
                 }
