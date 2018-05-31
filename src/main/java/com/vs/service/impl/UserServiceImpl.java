@@ -9,6 +9,8 @@ import com.vs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 /**
  * @author 欢
  */
@@ -113,6 +115,59 @@ public class UserServiceImpl implements UserService {
             result.setStatus(1);
             result.setSuccess(false);
             result.setMsg("注册失败！");
+        }
+        return result;
+    }
+
+    @Override
+    public Result createUser(User user) {
+        //使用UUID生成用户激活码
+        String uuid = UUID.randomUUID().toString();
+        String activationCode = uuid.substring(0,8) + uuid.substring(9,13);
+        user.setActivationCode(activationCode.toUpperCase());
+        //生成用户密码
+        String pwd = (int)((Math.random()*9+1)*100000) + "";
+        user.setUserPwd(pwd);
+        Result result = new Result();
+
+        int count = userDao.createUser(user);
+        if (count > 0){
+            result.setStatus(0);
+            result.setSuccess(true);
+            result.setMsg("创建"+user.getUserName() + ( user.getAuthority().equals("1") ? "同学" : "教师" ) + "成功");
+        } else {
+            result.setStatus(1);
+            result.setSuccess(false);
+            result.setMsg("创建"+user.getUserName() + ( user.getAuthority().equals("1") ? "同学" : "教师" ) + "失败");
+        }
+        return null;
+    }
+
+    /**
+     * 用户无效化操作
+     * @param userCode
+     * @return
+     */
+    public  Result cancelUser(String userCode){
+        User user = userDao.selectByUserCode(userCode);
+        int count = userDao.cancelUser(user.getUserId());
+        Result result = new Result();
+        //账号无效化成功并激活码被使用过，无效化其双亲账号
+        if (count > 0 && user.getTimes() < 2){
+            for (int i = 0; i < 2; i++) {
+                String parentUserCode = 4 + i + userCode.substring(1);
+                user = userDao.selectByUserCode(parentUserCode);
+                if (user != null){
+                    userDao.cancelUser(user.getUserId());
+                }
+            }
+            result.setStatus(0);
+            result.setSuccess(true);
+            result.setMsg("已成功删除" + user.getUserName() + ( user.getAuthority().equals("1") ? "，及其父母账号！":"！" ));
+        } else {
+            result.setStatus(1);
+            result.setSuccess(false);
+            result.setMsg("删除失败！" );
         }
         return result;
     }

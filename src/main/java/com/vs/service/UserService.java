@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    public Result login(User user);
+    Result login(User user);
 
-    public Result checkThreeCode(String userCode,String UserName,String activationCode);
+    Result checkThreeCode(String userCode,String UserName,String activationCode);
 
-    public Result register(String userCode,String userName,String UserPwd);
+    Result register(String userCode,String userName,String UserPwd);
+
+    Result createUser(User user);
+
+    Result cancelUser(String userCode);
 }

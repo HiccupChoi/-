@@ -65,4 +65,18 @@ public interface UserDao {
      * @param user
      */
     void subUserTimesOne(User user);
+
+    /**
+     * 创建用户账号
+     * @param user
+     * @return
+     */
+    int createUser(User user);
+
+    /**
+     * 用户无效化操作
+     * @param userId
+     * @return
+     */
+    int cancelUser(Integer userId);
 }

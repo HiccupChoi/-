@@ -45,4 +45,6 @@ public interface UserMapper {
     void subUserTimesOne(@Param("userCode") String userCode);
 
     void subUserTimesOne(@Param("user") User user);
+
+    int cancelUser(@Param("userId") int userId);
 }

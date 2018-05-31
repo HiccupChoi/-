@@ -120,7 +120,7 @@
                                         <p th:if="${user.authority == '1'}">指导老师 ： <span  th:text="${user.teachName}"></span></p>
                                         <p th:if="${user.authority == '1'}">激活码 ： <span th:text="${user.activationCode}"></span></p>
                                     </div>
-                                    <a>进入个人主页</a>
+                                    <a href="/homePage">进入个人主页</a>
                                     <a href="/users/logout">退出登录</a>
                                 </div>
                             </div>
