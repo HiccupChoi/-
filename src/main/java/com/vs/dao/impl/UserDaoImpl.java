@@ -8,8 +8,8 @@ import com.vs.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository("empDao")
-public class UserDaoImpi implements UserDao {
+@Repository
+public class UserDaoImpl implements UserDao {
 
     @Autowired
     private UserMapper userMapper;

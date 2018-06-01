@@ -14,7 +14,7 @@ import java.util.UUID;
 /**
  * @author 欢
  */
-@Service(value = "empService")
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
