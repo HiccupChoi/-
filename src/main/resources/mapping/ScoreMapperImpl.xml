@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vs.mapper.ScoreMapper" >
+    <select id="selectScoreByScore" resultMap="BaseResultMap" parameterType="com.vs.entity.Score" >
+        select
+        <include refid="Base_Column_List" />
+        from score
+        <where>
+            <trim  suffixOverrides=" AND " >
+                <if test="score.subjectId != null" >
+                    subject_id = #{score.subjectId,jdbcType=INTEGER} AND
+                </if>
+                <if test="score.onwerId != null" >
+                    onwer_id = #{score.onwerId,jdbcType=INTEGER} AND
+                </if>
+                <if test="score.examId != null" >
+                    exam_id = #{score.examId,jdbcType=INTEGER}  AND
+                </if>
+            </trim>
+        </where>
+        order by score ASC
+    </select>
+</mapper>

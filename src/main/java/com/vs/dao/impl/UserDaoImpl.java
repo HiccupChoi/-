@@ -8,6 +8,8 @@ import com.vs.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -70,5 +72,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int cancelUser(Integer userId){
         return userMapper.cancelUser(userId);
+    }
+
+    @Override
+    public List<User> findStudentsByClassId(Integer classId) {
+        return userMapper.findStudentsByClassId(classId);
     }
 }

@@ -17,6 +17,9 @@
     user_id userId, user_code userCode, user_name userName, user_pwd userPwd, gender gender, class_id classId, activation_code activationCode, times times,
     authority authority, dl dl
   </sql>
+  <sql id="Base_Column_List_noAs" >
+    user_id, user_code, user_name, user_pwd, gender, class_id, activation_code, times, authority, dl
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

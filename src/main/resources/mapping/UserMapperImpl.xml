@@ -50,6 +50,13 @@
         where user_code = #{userCode,jdbcType=VARCHAR}
         and dl != 1
     </select>
+    <select id="findStudentsByClassId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List_noAs" />
+        from user
+        where class_id = #{classId,jdbcType=INTEGER}
+        and dl = 0 AND authority = 1
+    </select>
     <update id="subUserTimesOne" parameterType="com.vs.entity.User" >
         update user
         set times = #{user.times,jdbcType=INTEGER}
@@ -62,5 +69,6 @@
         where user_id = #{userId,jdbcType=INTEGER}
         and dl != 1
     </update>
+
 
 </mapper>

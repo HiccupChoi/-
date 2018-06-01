@@ -3,6 +3,8 @@ package com.vs.dao;
 import com.vs.entity.User;
 import com.vs.entity.UserClass;
 
+import java.util.List;
+
 public interface UserDao {
     /**
      * 登录用户信息检测
@@ -79,4 +81,11 @@ public interface UserDao {
      * @return
      */
     int cancelUser(Integer userId);
+
+    /**
+     * 查找一个班内所有有效学生
+     * @param classId
+     * @return
+     */
+    List<User> findStudentsByClassId(Integer classId);
 }

@@ -3,6 +3,8 @@ package com.vs.mapper;
 import com.vs.entity.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);
 
@@ -35,6 +37,13 @@ public interface UserMapper {
      * @return
      */
     User findTeachByClassAndQ(@Param("classId") Integer classId);
+
+    /**
+     * 查找一个班内所有有效学生
+     * @param classId
+     * @return
+     */
+    List<User> findStudentsByClassId(@Param("classId")Integer classId);
 
     Integer checkThreeCode(@Param("user") User user);
 

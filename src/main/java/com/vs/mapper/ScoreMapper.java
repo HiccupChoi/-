@@ -1,6 +1,7 @@
 package com.vs.mapper;
 
 import com.vs.entity.Score;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface ScoreMapper {
 
     int updateByPrimaryKey(Score record);
 
-    List<Score> selectScoreByScore(Score score);
+    List<Score> selectScoreByScore(@Param("score") Score score);
 }

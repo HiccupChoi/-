@@ -2,13 +2,23 @@ package com.vs.controller;
 
 import com.vs.entity.Score;
 import com.vs.result.Result;
-import org.springframework.stereotype.Controller;
+import com.vs.service.ScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class ScoreController {
 
-    public Result FindScore(Score score){
-        return null;
+    @Autowired
+    private ScoreService scoreService;
+
+    @RequestMapping("/findScore")
+    public Result FindScore(){
+        Score score = new Score();
+        score.setOnwerId(1);
+        score.setSubjectId(1);
+        return scoreService.FindScore(score);
     }
 
 }

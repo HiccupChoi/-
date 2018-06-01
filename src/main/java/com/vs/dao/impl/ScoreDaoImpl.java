@@ -47,6 +47,6 @@ public class ScoreDaoImpl implements ScoreDao {
 
     @Override
     public List<Score> FindScore(Score score) {
-        return null;
+        return scoreMapper.selectScoreByScore(score);
     }
 }
