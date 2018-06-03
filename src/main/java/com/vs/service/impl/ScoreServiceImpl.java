@@ -26,7 +26,7 @@ public class ScoreServiceImpl implements ScoreService {
         List<Score> scores = new ArrayList<>();
         if (score.getOnwerId() == null){
             scores = findScoreAllNull(score);
-        } if (score.getSubjectId() == null) {
+        } else if (score.getSubjectId() == null) {
             score.setSubjectId(10);
             scores.addAll(scoreDao.FindScore(score));
         } else {

@@ -1,10 +1,11 @@
-package com.vs.mapper;
+package com.vs.dao;
 
 import com.vs.entity.Subject;
 
 import java.util.List;
 
-public interface SubjectMapper {
+public interface SubjectDao {
+
     int deleteByPrimaryKey(Integer subjectId);
 
     int insert(Subject record);
@@ -18,4 +19,5 @@ public interface SubjectMapper {
     int updateByPrimaryKey(Subject record);
 
     List<Subject> findSubjectAll();
+
 }

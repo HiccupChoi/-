@@ -119,17 +119,23 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    /**
+     * 学生/老师账号注册
+     * @param user
+     * @return
+     */
     @Override
     public Result createUser(User user) {
-        //使用UUID生成用户激活码
-        String uuid = UUID.randomUUID().toString();
-        String activationCode = uuid.substring(0,8) + uuid.substring(9,13);
-        user.setActivationCode(activationCode.toUpperCase());
+        if(user.getAuthority().equals("1")){
+            //使用UUID生成用户激活码
+            String uuid = UUID.randomUUID().toString();
+            String activationCode = uuid.substring(0,8) + uuid.substring(9,13);
+            user.setActivationCode(activationCode.toUpperCase());
+        }
         //生成用户密码
         String pwd = (int)((Math.random()*9+1)*100000) + "";
         user.setUserPwd(pwd);
         Result result = new Result();
-
         int count = userDao.createUser(user);
         if (count > 0){
             result.setStatus(0);

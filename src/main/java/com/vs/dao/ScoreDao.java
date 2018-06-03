@@ -1,6 +1,7 @@
 package com.vs.dao;
 
 import com.vs.entity.Score;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

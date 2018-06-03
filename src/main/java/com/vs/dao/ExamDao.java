@@ -1,10 +1,12 @@
-package com.vs.mapper;
+package com.vs.dao;
 
 import com.vs.entity.Exam;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ExamMapper {
+public interface ExamDao {
+
     int deleteByPrimaryKey(Integer examId);
 
     int insert(Exam record);

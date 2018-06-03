@@ -4,8 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <title>个人主页</title>
+    <link rel="stylesheet" type="text/css" href="../css/user_style.css" />
+    <link rel="stylesheet" type="text/css" href="../fonts/iconfont.css" />
 </head>
 <body>
     <div th:include="head.html"></div>
+    <div id="wrapper">
+        <div id="left-side">
+            <ul>
+                <li class="choose active">
+                    <div class="icon active">
+                        <i class="iconfont" style="font-size: 20px;">&#xe614;</i>
+                    </div>
+                    <span>总分</span>
+                </li>
+                <li class="pay">
+                    <div class="icon">
+                        <i class="iconfont" style="font-size: 20px;">&#xe60f;</i>
+                    </div>
+                    <span>科目</span>
+                </li>
+                <li class="wrap">
+                    <div class="icon">
+                        <i class="iconfont" style="font-size: 20px;">&#xe611;</i>
+                    </div>
+                    <span>考试</span>
+                </li>
+                <li class="ship">
+                    <div class="icon">
+                        <i class="iconfont" style="font-size: 20px;">&#xe612;</i>
+                    </div>
+                    <span>个人信息</span>
+                </li>
+            </ul>
+        </div>
+
+        <div id="border">
+            <div id="line" class="one"></div>
+        </div>
+
+        <div id="right-side">
+            <div id="first" class="active">
+                <div id="StudentTotalScore" style="width: 750px;height:400px;"></div>
+            </div>
+            <div id="second">
+                <select class="subject_select">
+                    <th:block th:each="subject : ${subjectList}">
+                        <option th:text="${subject.subjectName}"></option>
+                    </th:block>
+                </select>
+                <div id="StudentSubjectScore" style="width: 750px;height:400px;"></div>
+            </div>
+            <div id="third">
+                <div class="icon big">
+                    <svg viewBox="0 0 32 32">
+                        <g filter="">
+                            <use xlink:href="#gift"></use>
+                        </g>
+                    </svg>
+                </div>
+
+                <h1>We will wrap it</h1>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at viverra est, eu finibus mauris. Quisque tempus vestibulum fringilla. Morbi tortor eros, sollicitudin eu arcu sit amet, aliquet sagittis dolor. </p>
+
+            </div>
+            <div id="fourth">
+                <div class="icon big">
+                    <svg viewBox="0 0 32 32">
+                        <g filter="">
+                            <use xlink:href="#package"></use>
+                        </g>
+                    </svg>
+                </div>
+
+                <h1>Ship it</h1>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at viverra est, eu finibus mauris. Quisque tempus vestibulum fringilla. Morbi tortor eros, sollicitudin eu arcu sit amet, aliquet sagittis dolor. </p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/echarts.min.js"></script>
+    <script src="../js/StudentEacher.js"></script>
+    <script src="../js/StudentInfo.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var userName = [[${user.userName}]];
+        var examDate = [[${totalResultList.stringList}]];
+
+        var StudentTotalScoreEcharts = echarts.init(document.getElementById('StudentTotalScore'));
+        // ['2015-01', '2015-08', '2016-01', '2016-08', '2017-01', '2017-08', '2018-01']
+        var StudentTotalScoreDate = [[${totalResultList.integerList}]];
+        var StudentTotalScoreTitle = [[${totalResultList.title}]];
+        var StudentTotalScoreMin = [[${totalResultList.min}]];
+
+        var StudentSubjectScoreEcharts = echarts.init(document.getElementById('StudentSubjectScore'));
+        var StudentSubjectTitle = [[${subjectResultList.title}]];
+        var studentSubjectScore = [[${subjectResultList.integerList}]];
+        //var StudentSubject = ['数学','语文','英语','物理','化学','生物'];
+        var SubjectScoreMin = [[${subjectResultList.min}]];
+        studentInit(StudentTotalScoreEcharts,StudentTotalScoreTitle,userName,examDate,StudentTotalScoreDate,StudentTotalScoreMin);
+        studentInit(StudentSubjectScoreEcharts,StudentSubjectTitle,userName,examDate,studentSubjectScore,SubjectScoreMin);
+    </script>
 </body>
 </html>

@@ -5,7 +5,6 @@ import com.vs.entity.User;
 import com.vs.result.Result;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface UserService {
     Result login(User user);
 

@@ -19,8 +19,5 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping(value = "/essay")
-    public String toEssay(Model model){
-        return "essay";
-    }
+
 }
