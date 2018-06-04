@@ -178,4 +178,9 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public User findUserByCode(String code) {
+        return userDao.selectByUserCode(code);
+    }
+
 }

@@ -8,9 +8,27 @@ import java.util.List;
 public class ResultList {
     private List<String> stringList;
     private List<Integer> integerList;
+    private List<ResultMap> mapList;
     private String title;
     private String username;
     private Integer min;
+    private Integer sunScore;
+
+    public Integer getSunScore() {
+        return sunScore;
+    }
+
+    public void setSunScore(Integer sunScore) {
+        this.sunScore = sunScore;
+    }
+
+    public List<ResultMap> getMapList() {
+        return mapList;
+    }
+
+    public void setMapList(List<ResultMap> mapList) {
+        this.mapList = mapList;
+    }
 
     public List<String> getStringList() {
         return stringList;

@@ -3,7 +3,6 @@ package com.vs.service;
 
 import com.vs.entity.User;
 import com.vs.result.Result;
-import org.springframework.stereotype.Service;
 
 public interface UserService {
     Result login(User user);
@@ -15,4 +14,6 @@ public interface UserService {
     Result createUser(User user);
 
     Result cancelUser(String userCode);
+
+    User findUserByCode(String code);
 }
