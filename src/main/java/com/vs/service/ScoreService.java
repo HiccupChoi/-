@@ -6,4 +6,6 @@ import org.springframework.stereotype.Service;
 
 public interface ScoreService {
     Result FindScore(Score score);
+
+    int AddScore(Score score);
 }

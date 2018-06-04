@@ -1,5 +1,7 @@
 package com.vs.controller;
 
+import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
+import com.vs.dto.AddScore;
 import com.vs.entity.Exam;
 import com.vs.entity.Score;
 import com.vs.entity.Subject;
@@ -142,6 +144,43 @@ public class ScoreController {
         }
 
         return resultList;
+    }
+
+    @RequestMapping("/addScore")
+    public Result addScore(AddScore addScore){
+        Integer[] integerArray = {
+//                addScore.getChinese() != null ? addScore.getChinese() : 0,
+//                addScore.getMath() != null ? addScore.getMath() : 0,
+//                addScore.getEnglish() != null ? addScore.getEnglish() : 0,
+//                addScore.getPhysical() != null ? addScore.getPhysical() : 0,
+//                addScore.getChemistry() != null ? addScore.getChemistry() : 0,
+//                addScore.getBiology() != null ? addScore.getBiology() : 0,
+//                addScore.getHistory() != null ? addScore.getHistory() : 0,
+//                addScore.getPolitics() != null ? addScore.getPolitics() : 0,
+//                addScore.getGeography() != null ? addScore.getGeography() : 0,
+//                addScore.getSumScore() != null ? addScore.getSumScore() : 0
+                80,77,89,91,70,78,89,67,90,0
+        };
+
+        List<Subject> subjectList = subjectService.findSubjectAll();
+
+        Score score = new Score();
+        score.setExamId(1);
+        score.setOnwerId(5);
+
+        Integer sumScore = 0;
+        for (int i = 0; i < subjectList.size() - 1; i++) {
+            score.setSubjectId(subjectList.get(i).getSubjectId());
+            score.setScore(integerArray[i]);
+            scoreService.AddScore(score);
+            sumScore += integerArray[i];
+        }
+
+        score.setSubjectId(subjectList.get(subjectList.size()-1).getSubjectId());
+        score.setScore(sumScore);
+        scoreService.AddScore(score);
+
+        return null;
     }
 
 }

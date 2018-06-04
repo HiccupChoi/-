@@ -60,4 +60,13 @@ public class ScoreServiceImpl implements ScoreService {
         return scores;
     }
 
+    /**
+     * 添加成绩
+     * @return
+     */
+    @Override
+    public int AddScore(Score score) {
+        return scoreDao.insertSelective(score);
+    }
+
 }

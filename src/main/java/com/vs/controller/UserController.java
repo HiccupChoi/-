@@ -21,9 +21,9 @@ public class UserController {
     @RequestMapping("/createUser")
     public Result createUser(){
         User user = new User();
-        user.setUserCode("12014000002");
+        user.setUserCode("12014000003");
         user.setAuthority("1");
-        user.setUserName("哒哒");
+        user.setUserName("提提");
         user.setClassId(1417);
         user.setGender("2");
         return userService.createUser(user);
