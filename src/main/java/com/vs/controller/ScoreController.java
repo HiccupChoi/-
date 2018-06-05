@@ -77,10 +77,11 @@ public class ScoreController {
     }
 
 
-    @RequestMapping("/findScoreByExam")
-    public ResultList findScoreByExam(String selectValue,String studentId, HttpServletRequest request){
+    @RequestMapping("/findScoreByExamAndStudent")
+    public ResultList findScoreByExamAndStudent(String selectValue,String studentId, HttpServletRequest request){
         Score score = new Score();
         User user = new User();
+        String username ="";
         if (request.getSession().getAttribute("user")!=null){
             user = (User)request.getSession().getAttribute("user");
         }
@@ -90,14 +91,41 @@ public class ScoreController {
         }
         if (studentId != null && !studentId.isEmpty()){
             score.setOnwerId(Integer.parseInt(studentId));
+            username = userMap.get(Integer.parseInt(studentId)).getUserName();
         }else {
             score.setOnwerId(user.getUserId());
+            username = userMap.get(user.getUserId()).getUserName();
         }
         score.setExamId(Integer.parseInt(selectValue));
 
         Result result = scoreService.FindScore(score);
+        ResultList resultList = toResultList(result,"考试成绩详情",ChartEnum.ROSECHART.getType());
+        resultList.setUsername(username);
+        return resultList;
+    }
 
-        return toResultList(result,"考试成绩详情",ChartEnum.ROSECHART.getType());
+    @RequestMapping("/findScoreByStudentAndExam")
+    public ResultList findScoreByStudentAndExam(String selectValue,String examId, HttpServletRequest request){
+        Score score = new Score();
+        User user = new User();
+        String username ="";
+        if (request.getSession().getAttribute("user")!=null){
+            user = (User)request.getSession().getAttribute("user");
+        }
+        if(user.getAuthority().equals("4")){
+            String studentCode = "1" + user.getUserCode().substring(1);
+            user = userService.findUserByCode(studentCode);
+        }
+        if (examId != null && !examId.isEmpty()){
+            score.setExamId(Integer.parseInt(examId));
+            username = userMap.get(Integer.parseInt(selectValue)).getUserName();
+        }
+        score.setOnwerId(Integer.parseInt(selectValue));
+
+        Result result = scoreService.FindScore(score);
+        ResultList resultList = toResultList(result,"考试成绩详情",ChartEnum.ROSECHART.getType());
+        resultList.setUsername(username);
+        return resultList;
     }
 
     //翻译

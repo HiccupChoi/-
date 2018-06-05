@@ -198,7 +198,21 @@ function examAllScoreInit(StudentAllScoreECharts,StudentAllScoreTitle,className,
                 type:'line',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data:StudentTotalScoreDate
+                data:StudentTotalScoreDate,
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均值'
+                    }]
+                },
+                itemStyle : {
+                    normal : {
+                        color: '#002147',
+                        lineStyle:{
+                            color:'#002147'
+                        }
+                    }
+                }
             }
         ]
     };

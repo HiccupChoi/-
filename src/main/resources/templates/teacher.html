@@ -59,7 +59,7 @@
                         <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
                     </th:block>
                 </select>
-                <select class="student_select" id="student_select" style="margin-left: 20px; outline: none">
+                <select class="student_select" id="student_select" style="margin-left: 20px; outline: none" onchange="StudentChange(this[selectedIndex].value);">
                     <th:block th:each="student : ${studentList}">
                         <option th:value="${student.userId}" th:text="${student.userName}"></option>
                     </th:block>
@@ -68,12 +68,7 @@
             <div id="StudentSubjectScore" style="width: 750px;height:400px;"></div>
         </div>
         <div id="third">
-            <select class="subject_select" onchange='examChange(this[selectedIndex].value);'>
-                <th:block th:each="exam : ${examList}">
-                    <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
-                </th:block>
-            </select>
-            <div id="examScore" style="width: 750px;height: 400px;"></div>
+
         </div>
         <div id="fourth">
             <ul>
@@ -155,14 +150,14 @@
         $.ajax({
             type: 'post',
             dataType: "text",
-            url: '/findScoreByExam',
+            url: '/findScoreByExamAndStudent',
             data: {'selectValue':selectValue,"studentId":studentId},
             success: function (result) {
                 var json = eval("("+result+")");
                 var StudentSubjectTitle = json.title;
                 var StudentExamMapDate = json.mapList;
                 var SubjectScoreMin = json.min;
-                var ExamSubTitle = userName + "    总分 : " + json.sunScore;
+                var ExamSubTitle = json.username + "    总分 : " + json.sunScore;
                 var StudentSubject = json.stringList;
                 examScoreInit(StudentExamScoreECharts,StudentSubjectTitle,ExamSubTitle,StudentSubject,StudentExamMapDate,SubjectScoreMin);
             },
@@ -171,6 +166,30 @@
             }
         });
     }
+
+    function StudentChange(selectValue) {
+        var examId = $('option:selected', '#exam_select').val();
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/findScoreByStudentAndExam',
+            data: {'selectValue':selectValue,"examId":examId},
+            success: function (result) {
+                var json = eval("("+result+")");
+                var StudentSubjectTitle = json.title;
+                var StudentExamMapDate = json.mapList;
+                var SubjectScoreMin = json.min;
+                var ExamSubTitle = json.username + "    总分 : " + json.sunScore;
+                var StudentSubject = json.stringList;
+                examScoreInit(StudentExamScoreECharts,StudentSubjectTitle,ExamSubTitle,StudentSubject,StudentExamMapDate,SubjectScoreMin);
+            },
+            error:function () {
+                alert("网络延迟较大，请重试");
+            }
+        });
+    }
+
+
     function examChangeAllscore(selectValue) {
         $.ajax({
             type: 'post',
