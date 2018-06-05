@@ -2,7 +2,8 @@ package com.vs.enums;
 
 public enum ChartEnum {
         LINECHART(1,"折线图"),
-        ROSECHART(2,"玫瑰图")
+        ROSECHART(2,"玫瑰图"),
+        LINECHARWITHZOOM(3,"折线图/带DateZoom")
     ;
     private int type;
     private String typeName;

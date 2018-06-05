@@ -1,7 +1,5 @@
 package com.vs.controller;
 
-import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
-import com.vs.dto.AddScore;
 import com.vs.entity.Exam;
 import com.vs.entity.Score;
 import com.vs.entity.Subject;
@@ -20,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ScoreController {
@@ -36,6 +36,8 @@ public class ScoreController {
 
     @Autowired
     private UserService userService;
+
+    private Map<Integer,User> userMap = new HashMap<>();
 
     @RequestMapping("/findScoreBySubject")
     public ResultList findScoreBySubject(String selectValue, HttpServletRequest request){
@@ -55,8 +57,28 @@ public class ScoreController {
         return toResultList(result,"科目成绩",ChartEnum.LINECHART.getType());
     }
 
+    @RequestMapping("findAllScoreByExam")
+    public ResultList findAllScoreByExam(String selectValue, HttpServletRequest request){
+        Score score = new Score();
+        User user = new User();
+        if (request.getSession().getAttribute("user")!=null){
+            user = (User)request.getSession().getAttribute("user");
+        }
+        List<User> userList = userService.findStudentByClass(user.getClassId());
+        for (User userInfo:userList) {
+            userMap.put(userInfo.getUserId(),userInfo);
+        }
+
+        score.setExamId(Integer.parseInt(selectValue));
+        score.setSubjectId(10);
+
+        Result examAllScoreResult = scoreService.FindScore(score);
+        return toResultList(examAllScoreResult,"班内学生成绩一览",ChartEnum.LINECHARWITHZOOM.getType());
+    }
+
+
     @RequestMapping("/findScoreByExam")
-    public ResultList findScoreByExam(String selectValue, HttpServletRequest request){
+    public ResultList findScoreByExam(String selectValue,String studentId, HttpServletRequest request){
         Score score = new Score();
         User user = new User();
         if (request.getSession().getAttribute("user")!=null){
@@ -66,14 +88,19 @@ public class ScoreController {
             String studentCode = "1" + user.getUserCode().substring(1);
             user = userService.findUserByCode(studentCode);
         }
-        score.setOnwerId(user.getUserId());
+        if (studentId != null && !studentId.isEmpty()){
+            score.setOnwerId(Integer.parseInt(studentId));
+        }else {
+            score.setOnwerId(user.getUserId());
+        }
         score.setExamId(Integer.parseInt(selectValue));
 
         Result result = scoreService.FindScore(score);
+
         return toResultList(result,"考试成绩详情",ChartEnum.ROSECHART.getType());
     }
 
-    //翻译方法一
+    //翻译
     public ResultList toResultList(Result result, String title, int type){
         ResultList resultList = new ResultList();
         List<Subject> subjectList = subjectService.findSubjectAll();
@@ -82,11 +109,11 @@ public class ScoreController {
         //添加标题
         resultList.setTitle(title);
 
-        //添加score与min
+        //添加score
         List<Score> totalScoreList = (List<Score>) result.getData();
         List<Integer> integers = new ArrayList<>();
         int min = 0;
-        if (totalScoreList != null && totalScoreList.size()>0){
+        if (totalScoreList != null && totalScoreList.size()>0 && type != ChartEnum.LINECHARWITHZOOM.getType()){
             min = totalScoreList.get(0).getScore();
             for (Score scores: totalScoreList) {
                 integers.add(scores.getScore());
@@ -95,24 +122,39 @@ public class ScoreController {
                 }
             }
         }
-
-        min =  (min > 100) ? (min - 50) : (min - 10);
         resultList.setIntegerList(integers);
-        resultList.setMin(min);
 
         //添加分组
         List<String> strings = new ArrayList<>();
-        if (type == 1){
+        if (type == ChartEnum.LINECHART.getType()){
             for (Exam exam : examList) {
                 strings.add(exam.getExamName());
             }
         }
-        if (type == 2){
+        if (type == ChartEnum.ROSECHART.getType()){
             for (Subject subject : subjectList) {
                 strings.add(subject.getSubjectName());
             }
         }
         resultList.setStringList(strings);
+        if (type == ChartEnum.LINECHARWITHZOOM.getType()){
+            if (totalScoreList != null && totalScoreList.size()>0){
+                min = totalScoreList.get(0).getScore();
+                for (Score scores: totalScoreList) {
+                    integers.add(scores.getScore());
+                    strings.add(userMap.get(scores.getOnwerId()).getUserName());
+                    if (min > scores.getScore()){
+                        min = scores.getScore();
+                    }
+                }
+                resultList.setStringList(strings);
+                resultList.setIntegerList(integers);
+            }
+        }
+
+        //添加min
+        min =  (min > 100) ? (min - 50) : (min - 10);
+        resultList.setMin(min);
 
 
         //添加value,name,sumScore
@@ -144,43 +186,6 @@ public class ScoreController {
         }
 
         return resultList;
-    }
-
-    @RequestMapping("/addScore")
-    public Result addScore(AddScore addScore){
-        Integer[] integerArray = {
-//                addScore.getChinese() != null ? addScore.getChinese() : 0,
-//                addScore.getMath() != null ? addScore.getMath() : 0,
-//                addScore.getEnglish() != null ? addScore.getEnglish() : 0,
-//                addScore.getPhysical() != null ? addScore.getPhysical() : 0,
-//                addScore.getChemistry() != null ? addScore.getChemistry() : 0,
-//                addScore.getBiology() != null ? addScore.getBiology() : 0,
-//                addScore.getHistory() != null ? addScore.getHistory() : 0,
-//                addScore.getPolitics() != null ? addScore.getPolitics() : 0,
-//                addScore.getGeography() != null ? addScore.getGeography() : 0,
-//                addScore.getSumScore() != null ? addScore.getSumScore() : 0
-                80,77,89,91,70,78,89,67,90,0
-        };
-
-        List<Subject> subjectList = subjectService.findSubjectAll();
-
-        Score score = new Score();
-        score.setExamId(1);
-        score.setOnwerId(5);
-
-        Integer sumScore = 0;
-        for (int i = 0; i < subjectList.size() - 1; i++) {
-            score.setSubjectId(subjectList.get(i).getSubjectId());
-            score.setScore(integerArray[i]);
-            scoreService.AddScore(score);
-            sumScore += integerArray[i];
-        }
-
-        score.setSubjectId(subjectList.get(subjectList.size()-1).getSubjectId());
-        score.setScore(sumScore);
-        scoreService.AddScore(score);
-
-        return null;
     }
 
 }

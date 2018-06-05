@@ -47,7 +47,7 @@ function studentInit(studentChart,title,subtitle,yAllDate,scoreDate,min) {
             }
         },
         series: [{
-            name: '总分',
+            name: '分数',
             type: 'line',
             data: scoreDate,
             markPoint: {
@@ -126,4 +126,83 @@ function examScoreInit(examScoreECharts,StudentSubjectTitle,userName,StudentSubj
     };
 
     examScoreECharts.setOption(option)
+}
+
+
+//画一个带dataZoom的折线图
+function examAllScoreInit(StudentAllScoreECharts,StudentAllScoreTitle,className,StudentAllName,StudentTotalScoreDate,min) {
+
+    option = {
+        title: {
+            text: StudentAllScoreTitle,
+            subtext: className,
+            x: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                animation: true
+            }
+        },
+        legend: {
+            data:['分数'],
+            x: 'left'
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'}
+        },
+        dataZoom: [
+            {
+                show: true,
+                realtime: true,
+                start: 0,
+                end: 100,
+                xAxisIndex: [0]
+            }
+        ],
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false,
+                axisLine: {onZero: true},
+                data: StudentAllName
+            }
+        ],
+        yAxis : [
+            {
+                name : '得分',
+                type : 'value',
+                min:min,
+                boundaryGap: ['10%', '10%']
+            }
+        ],
+        visualMap: [{
+            show: false,
+            type: 'continuous',
+            seriesIndex: 0,
+            min: 0,
+            max: 60
+        }],
+        series : [
+            {
+                name:'分数',
+                type:'line',
+                symbolSize: 8,
+                hoverAnimation: false,
+                data:StudentTotalScoreDate
+            }
+        ]
+    };
+
+    //绑定视图
+    StudentAllScoreECharts.setOption(option)
 }

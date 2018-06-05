@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人主页</title>
+    <link rel="stylesheet" type="text/css" href="../css/user_style.css" />
+    <link rel="stylesheet" type="text/css" href="../fonts/iconfont.css" />
+</head>
+<body>
+<div th:include="head.html"></div>
+<div id="wrapper">
+    <div id="left-side">
+        <ul>
+            <li class="choose active">
+                <div class="icon active">
+                    <i class="iconfont" style="font-size: 20px;">&#xe614;</i>
+                </div>
+                <span>班级内学生成绩</span>
+            </li>
+            <li class="pay">
+                <div class="icon">
+                    <i class="iconfont" style="font-size: 20px;">&#xe60f;</i>
+                </div>
+                <span>查看学生详情</span>
+            </li>
+            <li class="wrap">
+                <div class="icon">
+                    <i class="iconfont" style="font-size: 20px;">&#xe611;</i>
+                </div>
+                <span>修改学生信息</span>
+            </li>
+            <li class="ship">
+                <div class="icon">
+                    <i class="iconfont" style="font-size: 20px;">&#xe612;</i>
+                </div>
+                <span>个人信息</span>
+            </li>
+        </ul>
+    </div>
+
+    <div id="border">
+        <div id="line" class="one"></div>
+    </div>
+
+    <div id="right-side">
+        <div id="first" class="active">
+            <select class="subject_select" id="exam_all_select" onchange='examChangeAllscore(this[selectedIndex].value);'>
+                <th:block th:each="exam : ${examList}">
+                    <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
+                </th:block>
+            </select>
+            <div id="StudentTotalScore" style="width: 750px;height:400px;"></div>
+        </div>
+        <div id="second">
+            <div style="width: 200px;height: 50px">
+                <select class="subject_select" id="exam_select" onchange='examChange(this[selectedIndex].value);'>
+                    <th:block th:each="exam : ${examList}">
+                        <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
+                    </th:block>
+                </select>
+                <select class="student_select" id="student_select" style="margin-left: 20px; outline: none">
+                    <th:block th:each="student : ${studentList}">
+                        <option th:value="${student.userId}" th:text="${student.userName}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <div id="StudentSubjectScore" style="width: 750px;height:400px;"></div>
+        </div>
+        <div id="third">
+            <select class="subject_select" onchange='examChange(this[selectedIndex].value);'>
+                <th:block th:each="exam : ${examList}">
+                    <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
+                </th:block>
+            </select>
+            <div id="examScore" style="width: 750px;height: 400px;"></div>
+        </div>
+        <div id="fourth">
+            <ul>
+                <li>姓名 :
+                    <span th:text="${user.userName}"></span>
+                    <span th:if="${user.authority == '1'}">   学生</span>
+                    <span th:if="${user.authority == '2'}">   老师</span>
+                    <span th:if="${user.authority == '4'}">   同学的家长</span>
+                </li>
+                <li>学号 :
+                    <span th:text="${user.userCode}"></span>
+                </li>
+                <li th:if="${user.authority == '1'}">老师 :
+                    <span th:text="${user.teachName}"></span>
+                </li>
+                <li th:if="${user.authority != '4'}">班级 :
+                    <span th:text="${user.className}"></span>
+                </li>
+                <li>性别 :
+                    <span th:if="${user.gender == '1'}">男</span>
+                    <span th:if="${user.gender == '2'}">女</span>
+                </li>
+                <li th:if="${user.authority == '1'}">激活码 :
+                    <span th:text="${user.activationCode}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../js/echarts.min.js"></script>
+<script src="../js/StudentEacher.js"></script>
+<script src="../js/StudentInfo.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    var className = [[${user.className}]];
+
+    var StudentAllScoreECharts = echarts.init(document.getElementById('StudentTotalScore'));
+    var StudentTotalScoreDate = [[${examAllScoreResultList.integerList}]];
+    var StudentAllScoreTitle = [[${examAllScoreResultList.title}]];
+    var StudentTotalScoreMin = [[${examAllScoreResultList.min}]];
+    var StudentAllName = [[${examAllScoreResultList.stringList}]];
+    examAllScoreInit(StudentAllScoreECharts,StudentAllScoreTitle,className,StudentAllName,StudentTotalScoreDate,StudentTotalScoreMin);
+
+    var StudentExamScoreECharts = echarts.init(document.getElementById('StudentSubjectScore'));
+    var StudentSubject = [[${examResultList.stringList}]];
+    var StudentExamTitle = [[${examResultList.title}]];
+    var StudentExamMapDate = [[${examResultList.mapList}]];
+    var ExamSubTitle = [[${examResultList.username}]] + "    总分 : " + [[${examResultList.sunScore}]];
+    examScoreInit(StudentExamScoreECharts,StudentExamTitle,ExamSubTitle,StudentSubject,StudentExamMapDate);
+</script>
+<script type="text/javascript" th:inline="javascript">
+    var StudentSubjectScoreEcharts = echarts.init(document.getElementById('StudentSubjectScore'));
+    var StudentAllScoreECharts = echarts.init(document.getElementById('StudentTotalScore'));
+    var userName = [[${user.userName}]];
+    var className = [[${user.className}]];
+
+    function subjectChange(selectValue){
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/findScoreBySubject',
+            data: {'selectValue':selectValue},
+            success: function (result) {
+                var json = eval("("+result+")");
+                var StudentSubjectTitle = json.title;
+                var studentSubjectScore = json.integerList;
+                var SubjectScoreMin = json.min;
+                var examDate = json.stringList;
+                studentInit(StudentSubjectScoreEcharts,StudentSubjectTitle,userName,examDate,studentSubjectScore,SubjectScoreMin);
+            },
+            error:function () {
+                alert("网络延迟较大，请重试");
+            }
+        });
+    }
+
+    function examChange(selectValue) {
+        var studentId = $('option:selected', '#student_select').val();
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/findScoreByExam',
+            data: {'selectValue':selectValue,"studentId":studentId},
+            success: function (result) {
+                var json = eval("("+result+")");
+                var StudentSubjectTitle = json.title;
+                var StudentExamMapDate = json.mapList;
+                var SubjectScoreMin = json.min;
+                var ExamSubTitle = userName + "    总分 : " + json.sunScore;
+                var StudentSubject = json.stringList;
+                examScoreInit(StudentExamScoreECharts,StudentSubjectTitle,ExamSubTitle,StudentSubject,StudentExamMapDate,SubjectScoreMin);
+            },
+            error:function () {
+                alert("网络延迟较大，请重试");
+            }
+        });
+    }
+    function examChangeAllscore(selectValue) {
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/findAllScoreByExam',
+            data: {'selectValue':selectValue},
+            success: function (result) {
+                var json = eval("("+result+")");
+                var StudentTotalScoreDate = json.integerList;
+                var StudentAllScoreTitle = json.title;
+                var StudentTotalScoreMin = json.min;
+                var StudentAllName = json.stringList;
+                examAllScoreInit(StudentAllScoreECharts,StudentAllScoreTitle,className,StudentAllName,StudentTotalScoreDate,StudentTotalScoreMin);
+            },
+            error:function () {
+                alert("网络延迟较大，请重试");
+            }
+        });
+    }
+</script>
+</body>
+</html>

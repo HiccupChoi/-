@@ -2,7 +2,6 @@ package com.vs.dao;
 
 import com.vs.entity.User;
 import com.vs.entity.UserClass;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

@@ -9,6 +9,7 @@ import com.vs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -181,6 +182,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByCode(String code) {
         return userDao.selectByUserCode(code);
+    }
+
+    @Override
+    public List<User> findStudentByClass(Integer classId){
+        return userDao.findStudentsByClassId(classId);
     }
 
 }

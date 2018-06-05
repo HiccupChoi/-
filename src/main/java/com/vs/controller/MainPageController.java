@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainPageController {
@@ -36,6 +38,11 @@ public class MainPageController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ScoreController scoreController;
+
+    private Map<Integer,User> userMap = new HashMap<>();
+
     /**
      * 学生/家长 进入个人首页
      * @param model
@@ -45,7 +52,8 @@ public class MainPageController {
     @RequestMapping(value = "/user")
     public String toEssay(Model model, HttpServletRequest request){
         User user = new User();
-
+        Score score = new Score();
+        List<User> userList = new ArrayList<>();
         if (request.getSession().getAttribute("user") != null){
             user = (User)request.getSession().getAttribute("user");
         } else {
@@ -59,13 +67,28 @@ public class MainPageController {
             user = userService.findUserByCode(studentCode);
         }
 
+        //注入课程和考试信息
         List<Subject> subjectList = subjectService.findSubjectAll();
         List<Exam> examList = examService.findExamAll();
         model.addAttribute("subjectList",subjectList);
         model.addAttribute("examList",examList);
 
+        //权限为2,则将所有学生信息注入
+        //将学生信息以key为id转为map,方便使用
+        if (user.getAuthority().equals("2")){
+            userList = userService.findStudentByClass(user.getClassId());
+            for (User userInfo:userList) {
+                userMap.put(userInfo.getUserId(),userInfo);
+            }
+            model.addAttribute("studentList",userList);
+
+            //获取班内学生第一场考试所有成绩
+            String examId = (examList.size() > 0 ? examList.get(0).getExamId() : 100) + "";
+            model.addAttribute("examAllScoreResultList",scoreController.findAllScoreByExam(examId,request));
+        }
+
         //获取总成绩
-        Score score = new Score();
+        score = new Score();
         score.setOnwerId(user.getUserId());
         Result totalScoreResult = scoreService.FindScore(score);
         ResultList totalResultList = toResultList(totalScoreResult,"总成绩变化图",ChartEnum.LINECHART.getType());
@@ -73,7 +96,11 @@ public class MainPageController {
 
         //获取科目成绩
         score = new Score();
-        score.setOnwerId(user.getUserId());
+        if (user.getAuthority().equals("2")){
+            score.setOnwerId(userList.get(0).getUserId());
+        } else {
+            score.setOnwerId(user.getUserId());
+        }
         score.setSubjectId(subjectList.get(0).getSubjectId());
         Result subjectScoreResult = scoreService.FindScore(score);
         ResultList subjectResultList = toResultList(subjectScoreResult,"各科目成绩",ChartEnum.LINECHART.getType());
@@ -81,16 +108,30 @@ public class MainPageController {
 
         //获取考试中某一场的详细科目成绩
         score = new Score();
-        score.setOnwerId(user.getUserId());
+        String userName = "";
+        if (user.getAuthority().equals("2")){
+            userName = userList.get(0).getUserName();
+            score.setOnwerId(userList.get(0).getUserId());
+        } else {
+            score.setOnwerId(user.getUserId());
+        }
         score.setExamId(examList.get(0).getExamId());
         Result examScoreResult = scoreService.FindScore(score);
         ResultList examResultList = toResultList(examScoreResult,"考试成绩详情",ChartEnum.ROSECHART.getType());
+        examResultList.setUsername(userName);
         model.addAttribute("examResultList",examResultList);
 
-        return "user";
+        if (user.getAuthority().equals("2")){
+            return "teacher";
+        } else if (user.getAuthority().equals("3")){
+            return "";
+        } else {
+            return "user";
+        }
+
     }
 
-    //翻译方法一
+    //翻译
     public ResultList toResultList(Result result, String title, int type){
         ResultList resultList = new ResultList();
         List<Subject> subjectList = subjectService.findSubjectAll();
@@ -99,46 +140,69 @@ public class MainPageController {
         //添加标题
         resultList.setTitle(title);
 
-        //添加score与min
+        //添加score
         List<Score> totalScoreList = (List<Score>) result.getData();
         List<Integer> integers = new ArrayList<>();
-        int min = totalScoreList.get(0).getScore();
-        for (Score scores: totalScoreList) {
-            integers.add(scores.getScore());
-            if (min > scores.getScore()){
-                min = scores.getScore();
+        int min = 0;
+        if (totalScoreList != null && totalScoreList.size()>0 && type != ChartEnum.LINECHARWITHZOOM.getType()){
+            min = totalScoreList.get(0).getScore();
+            for (Score scores: totalScoreList) {
+                integers.add(scores.getScore());
+                if (min > scores.getScore()){
+                    min = scores.getScore();
+                }
             }
         }
-        min =  (min > 100) ? (min - 50) : (min - 10);
         resultList.setIntegerList(integers);
-        resultList.setMin(min);
 
         //添加分组
         List<String> strings = new ArrayList<>();
-        if (type == 1){
+        if (type == ChartEnum.LINECHART.getType()){
             for (Exam exam : examList) {
                 strings.add(exam.getExamName());
             }
         }
-        if (type == 2){
+        if (type == ChartEnum.ROSECHART.getType()){
             for (Subject subject : subjectList) {
                 strings.add(subject.getSubjectName());
             }
         }
         resultList.setStringList(strings);
+        if (type == ChartEnum.LINECHARWITHZOOM.getType()){
+            if (totalScoreList != null && totalScoreList.size()>0){
+                min = totalScoreList.get(0).getScore();
+                for (Score scores: totalScoreList) {
+                    integers.add(scores.getScore());
+                    strings.add(userMap.get(scores.getOnwerId()).getUserName());
+                    if (min > scores.getScore()){
+                        min = scores.getScore();
+                    }
+                }
+                resultList.setStringList(strings);
+                resultList.setIntegerList(integers);
+            }
+        }
+
+        //添加min
+        min =  (min > 100) ? (min - 50) : (min - 10);
+        resultList.setMin(min);
 
 
         //添加value,name,sumScore
         if (type == 2){
             List<ResultMap> resultMapList = new ArrayList<>();
             int sumScore = 0;
-            for (int i = 0; i < subjectList.size() - 1; i++) {
+            for (int i = 0; i < subjectList.size(); i++) {
+                int score = 0;
 
-                if (i < totalScoreList.size() && (totalScoreList.get(i).getSubjectId() == 10)){
-                    continue;
+                if (totalScoreList != null && totalScoreList.size() > 0){
+                    if (i < totalScoreList.size() && (totalScoreList.get(i).getSubjectId() == 10)){
+                        continue;
+                    }
+
+                    score =i < totalScoreList.size() ? totalScoreList.get(i).getScore() : 0 ;
                 }
 
-                int score = i < totalScoreList.size() ? totalScoreList.get(i).getScore() : 0 ;
                 sumScore += score;
 
                 ResultMap resultMap = new ResultMap(
