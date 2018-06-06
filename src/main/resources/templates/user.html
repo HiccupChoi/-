@@ -48,19 +48,23 @@
                 <div id="StudentTotalScore" style="width: 750px;height:400px;"></div>
             </div>
             <div id="second">
-                <select class="subject_select"  onchange='subjectChange(this[selectedIndex].value);'>
-                    <th:block th:each="subject : ${subjectList}">
-                        <option th:value="${subject.subjectId}" th:text="${subject.subjectName}"></option>
-                    </th:block>
-                </select>
+                <div style="width: 100px">
+                    <select class="subject_select form-control"  onchange='subjectChange(this[selectedIndex].value);'>
+                        <th:block th:each="subject : ${subjectList}">
+                            <option th:value="${subject.subjectId}" th:text="${subject.subjectName}"></option>
+                        </th:block>
+                    </select>
+                </div>
                 <div id="StudentSubjectScore" style="width: 750px;height:400px;"></div>
             </div>
             <div id="third">
-                <select class="subject_select" onchange='examChange(this[selectedIndex].value);'>
-                    <th:block th:each="exam : ${examList}">
-                        <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
-                    </th:block>
-                </select>
+                <div style="width: 100px">
+                    <select class="subject_select form-control" onchange='examChange(this[selectedIndex].value);'>
+                        <th:block th:each="exam : ${examList}">
+                            <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
+                        </th:block>
+                    </select>
+                </div>
                 <div id="examScore" style="width: 750px;height: 400px;"></div>
             </div>
             <div id="fourth">

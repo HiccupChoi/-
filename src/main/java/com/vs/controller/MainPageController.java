@@ -42,7 +42,9 @@ public class MainPageController {
     private ScoreController scoreController;
 
     private Map<Integer,User> userMap = new HashMap<>();
-
+    private Map<Integer,Subject> subjectMap = new HashMap<>();
+    private Map<Integer,Exam> examMap = new HashMap<>();
+    private Map<Integer,Score> scoreMap = new HashMap<>();
     /**
      * 学生/家长 进入个人首页
      * @param model
@@ -84,7 +86,18 @@ public class MainPageController {
 
             //获取班内学生第一场考试所有成绩
             String examId = (examList.size() > 0 ? examList.get(0).getExamId() : 100) + "";
-            model.addAttribute("examAllScoreResultList",scoreController.findAllScoreByExam(examId,request));
+            ResultList examAllScoreResultList =scoreController.findAllScoreByExam(examId,request);
+            for (int i = 0; i < userList.size(); i++) {
+                ResultList result = scoreController.findScoreByExamAndStudent("1",(userList.get(i).getUserId()+""),request);
+                if (i < examAllScoreResultList.getIntegerList().size()){
+                    result.getMapList().add(new ResultMap(
+                            examAllScoreResultList.getIntegerList().get(i),
+                            "总分"
+                    ));
+                }
+                examAllScoreResultList.getListmap().put(userList.get(i),result.getMapList());
+            }
+            model.addAttribute("examAllScoreResultList",examAllScoreResultList);
         }
 
         //获取总成绩
@@ -135,38 +148,46 @@ public class MainPageController {
     public ResultList toResultList(Result result, String title, int type){
         ResultList resultList = new ResultList();
         List<Subject> subjectList = subjectService.findSubjectAll();
+        subjectMap = new HashMap<>();
+        for (Subject subject:subjectList) {
+            subjectMap.put(subject.getSubjectId(),subject);
+        }
         List<Exam> examList = examService.findExamAll();
+        examMap = new HashMap<>();
+        for (Exam exam:examList) {
+            examMap.put(exam.getExamId(),exam);
+        }
+        List<Score> totalScoreList = (List<Score>) result.getData();
+        scoreMap = new HashMap<>();
+        if (result.isSuccess()){
+            for (Score score : totalScoreList) {
+                scoreMap.put(score.getSubjectId(),score);
+            }
+        }
 
         //添加标题
         resultList.setTitle(title);
 
         //添加score
-        List<Score> totalScoreList = (List<Score>) result.getData();
         List<Integer> integers = new ArrayList<>();
+        List<String> strings = new ArrayList<>();
         int min = 0;
         if (totalScoreList != null && totalScoreList.size()>0 && type != ChartEnum.LINECHARWITHZOOM.getType()){
             min = totalScoreList.get(0).getScore();
             for (Score scores: totalScoreList) {
                 integers.add(scores.getScore());
+                if (type == ChartEnum.LINECHART.getType()){
+                    strings.add(examMap.get(scores.getExamId()).getExamName());
+                }
+                if (type == ChartEnum.ROSECHART.getType()){
+                    strings.add(subjectMap.get(scores.getSubjectId()).getSubjectName());
+                }
                 if (min > scores.getScore()){
                     min = scores.getScore();
                 }
             }
         }
         resultList.setIntegerList(integers);
-
-        //添加分组
-        List<String> strings = new ArrayList<>();
-        if (type == ChartEnum.LINECHART.getType()){
-            for (Exam exam : examList) {
-                strings.add(exam.getExamName());
-            }
-        }
-        if (type == ChartEnum.ROSECHART.getType()){
-            for (Subject subject : subjectList) {
-                strings.add(subject.getSubjectName());
-            }
-        }
         resultList.setStringList(strings);
         if (type == ChartEnum.LINECHARWITHZOOM.getType()){
             if (totalScoreList != null && totalScoreList.size()>0){
@@ -189,7 +210,7 @@ public class MainPageController {
 
 
         //添加value,name,sumScore
-        if (type == 2){
+        if (type == ChartEnum.ROSECHART.getType() || type == ChartEnum.LINECHARWITHZOOM.getType()){
             List<ResultMap> resultMapList = new ArrayList<>();
             int sumScore = 0;
             for (int i = 0; i < subjectList.size(); i++) {
@@ -199,8 +220,7 @@ public class MainPageController {
                     if (i < totalScoreList.size() && (totalScoreList.get(i).getSubjectId() == 10)){
                         continue;
                     }
-
-                    score =i < totalScoreList.size() ? totalScoreList.get(i).getScore() : 0 ;
+                    score = scoreMap.get(subjectList.get(i).getSubjectId()) != null ? scoreMap.get(subjectList.get(i).getSubjectId()).getScore() : 0 ;
                 }
 
                 sumScore += score;

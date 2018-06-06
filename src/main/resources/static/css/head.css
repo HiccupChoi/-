@@ -7,7 +7,7 @@
 .nav_box{
 	
 }
-.container{
+.user_container{
     float: right;
     margin-right: 20px;
 }
@@ -155,4 +155,8 @@ input:-ms-input-placeholder { /* Internet Explorer 10+*/
     margin-left: 3%;
     height: 16px;
     width: 90%;
+}
+.Select_box{
+	width: 100px;
+	float: left;
 }

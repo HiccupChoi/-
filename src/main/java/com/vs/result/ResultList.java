@@ -1,6 +1,10 @@
 package com.vs.result;
 
+import com.vs.entity.User;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用作返回成绩
@@ -9,10 +13,19 @@ public class ResultList {
     private List<String> stringList;
     private List<Integer> integerList;
     private List<ResultMap> mapList;
+    private Map<User,List<ResultMap>> Listmap = new HashMap<>();
     private String title;
     private String username;
     private Integer min;
     private Integer sunScore;
+
+    public Map<User, List<ResultMap>> getListmap() {
+        return Listmap;
+    }
+
+    public void setListmap(Map<User, List<ResultMap>> listmap) {
+        Listmap = listmap;
+    }
 
     public Integer getSunScore() {
         return sunScore;

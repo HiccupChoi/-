@@ -228,12 +228,7 @@ option{
 .subject_select{
     appearance:none;
     width: 100px;
-    height: 40px !important;
     outline: none;
-    line-height: 20px !important;
-}
-.subject_select>option{
-    height: 40px !important;
     line-height: 20px !important;
 }
 #fourth > ul > li:first-child{
@@ -251,9 +246,42 @@ option{
 	line-height: 30px;
 	font-size: 15px;
 }
-
-
+.Student_list{
+	width: 780px;
+	margin: 0 auto;
+}
 /*h1 {
     font-size: 2em;
     margin: 0.67em 0;
 }*/
+
+ul.pagination>li>span,ul.pagination>li>a,ul.pagination>li.active>a,ul.pager>li>span{
+	cursor: pointer;
+}
+.input-page-div>input{
+	width:5em;
+	height:1.8em;
+	margin:0.4em 0.2em 0.2em 0.2em;
+	text-align: center;
+}
+.input-page-div>.input-btn-xs{
+	margin-left:1em;
+	font-size: 1em;
+	width:3em;
+	background-color: #337ab7;
+	color:#fff;
+}
+.input-page-div{
+	display: inline-block;
+	margin-left:1em;
+}
+.form-group {
+	width: 40%;
+	float: left;
+	margin-bottom: 15px;
+	margin-left: 5%;
+}
+.form-control{
+	width: 90%;
+	float: left;
+}

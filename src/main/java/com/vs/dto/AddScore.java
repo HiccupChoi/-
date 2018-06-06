@@ -20,7 +20,7 @@ public class AddScore {
     private Integer history;
     //政治
     private Integer politics;
-    //生物
+    //地理
     private Integer geography;
     //总分
     private Integer sumScore;
