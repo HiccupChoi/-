@@ -10,7 +10,7 @@ var politics_Boolean = true;
 var sum_Boolean = false;
 
 $('#txt_math').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_math").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_math").val()) ) {
         $('.math_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         math_Boolean = true;
@@ -21,7 +21,7 @@ $('#txt_math').blur(function() {
 });
 
 $('#txt_chinese').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_chinese").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_chinese").val())) {
         $('.chinese_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         chinese_Boolean = true;
@@ -32,7 +32,7 @@ $('#txt_chinese').blur(function() {
 });
 
 $('#txt_english').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_english").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_english").val())) {
         $('.english_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         english_Boolean = true;
@@ -43,7 +43,7 @@ $('#txt_english').blur(function() {
 });
 
 $('#txt_physical').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_physical").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_physical").val())) {
         $('.physical_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         physical_Boolean = true;
@@ -54,7 +54,7 @@ $('#txt_physical').blur(function() {
 });
 
 $('#txt_chemistry').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_chemistry").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_chemistry").val())) {
         $('.chemistry_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         chemistry_Boolean = true;
@@ -65,7 +65,7 @@ $('#txt_chemistry').blur(function() {
 });
 
 $('#txt_biology').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_biology").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_biology").val())) {
         $('.biology_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         biology_Boolean = true;
@@ -76,7 +76,7 @@ $('#txt_biology').blur(function() {
 });
 
 $('#txt_geography').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_geography").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_geography").val())) {
         $('.geography_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         geography_Boolean = true;
@@ -87,7 +87,7 @@ $('#txt_geography').blur(function() {
 });
 
 $('#txt_history').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_history").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_history").val())) {
         $('.history_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         history_Boolean = true;
@@ -98,7 +98,7 @@ $('#txt_history').blur(function() {
 });
 
 $('#txt_politics').blur(function() {
-    if((/^[0-9_-]{0,2}$/).test($("#txt_politics").val())) {
+    if((/^(0|[1-9]\d|100)$/).test($("#txt_politics").val())) {
         $('.politics_hint').html("✔").css("color", "green");
         sum_Boolean = true;
         politics_Boolean = true;
@@ -132,7 +132,16 @@ function changeScore(){
             type: "POST",
             dataType: "text",
             url: "/addScore" ,
-            data: {"math":$('#txt_math').val()},
+            data: { "math":$('#txt_math').val(),
+                    "chinese":$("#txt_chinese").val(),
+                    "english":$("#txt_english").val(),
+                    "physical":$("#txt_physical").val(),
+                    "chemistry":$("#txt_chemistry").val(),
+                    "biology":$("#txt_biology").val(),
+                    "geography":$("#txt_geography").val(),
+                    "history":$("#txt_history").val(),
+                    "politics":$("#txt_politics").val()
+                    },
             success: function (result) {
                 var json = eval("("+result+")");//将json类型字符串转换为json对象
                 if (json.success){

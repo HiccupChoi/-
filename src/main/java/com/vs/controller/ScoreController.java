@@ -265,7 +265,7 @@ public class ScoreController {
 
 
     @RequestMapping("/addScore")
-    public Result addScore(String math){
+    public Result addScore(String math,String chinese,String english,String physical,String chemistry,String biology,String geography,String history,String politics){
         Integer[] integerArray = {
 //                addScore.getChinese(),
 //                addScore.getMath(),
