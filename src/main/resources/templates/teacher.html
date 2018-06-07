@@ -65,25 +65,6 @@
                         <td><a style="cursor: pointer" th:onclick="'javascript:toclick(\''+${examScore.key}+'\',\''+${examScore.key.userId}+'\');'">修改</a></td>
                     </tr>
                 </table>
-                <!--<nav aria-label="Page navigation">-->
-                <!--<ul class="pagination">-->
-                <!--<li class="disabled">-->
-                <!--<a href="#" aria-label="Previous">-->
-                <!--<span aria-hidden="true">&laquo;</span>-->
-                <!--</a>-->
-                <!--</li>-->
-                <!--<li><a href="#">1</a></li>-->
-                <!--<li><a href="#">2</a></li>-->
-                <!--<li><a href="#">3</a></li>-->
-                <!--<li><a href="#">4</a></li>-->
-                <!--<li><a href="#">5</a></li>-->
-                <!--<li>-->
-                <!--<a href="#" aria-label="Next">-->
-                <!--<span aria-hidden="true">&raquo;</span>-->
-                <!--</a>-->
-                <!--</li>-->
-                <!--</ul>-->
-                <!--</nav>-->
             </div>
         </div>
         <div id="second">
@@ -201,7 +182,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default" onclick="cencerChangeScore()">取消</button>
                     <button type="button" id="btn_submit" class="btn btn-primary" onclick="changeScore()">确认</button>
                 </div>
             </div>

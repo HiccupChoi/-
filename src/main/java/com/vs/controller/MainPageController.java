@@ -1,17 +1,11 @@
 package com.vs.controller;
 
-import com.vs.entity.Exam;
-import com.vs.entity.Score;
-import com.vs.entity.Subject;
-import com.vs.entity.User;
+import com.vs.entity.*;
 import com.vs.enums.ChartEnum;
 import com.vs.result.Result;
 import com.vs.result.ResultList;
 import com.vs.result.ResultMap;
-import com.vs.service.ExamService;
-import com.vs.service.ScoreService;
-import com.vs.service.SubjectService;
-import com.vs.service.UserService;
+import com.vs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +35,9 @@ public class MainPageController {
     @Autowired
     private ScoreController scoreController;
 
+    @Autowired
+    private ClassService classService;
+
     private Map<Integer,User> userMap = new HashMap<>();
     private Map<Integer,Subject> subjectMap = new HashMap<>();
     private Map<Integer,Exam> examMap = new HashMap<>();
@@ -63,86 +60,91 @@ public class MainPageController {
         }
 
         model.addAttribute("user",user);
-
-        if(user.getAuthority().equals("4")){
-            String studentCode = "1" + user.getUserCode().substring(1);
-            user = userService.findUserByCode(studentCode);
-        }
-
-        //注入课程和考试信息
-        List<Subject> subjectList = subjectService.findSubjectAll();
-        List<Exam> examList = examService.findExamAll();
-        model.addAttribute("subjectList",subjectList);
-        model.addAttribute("examList",examList);
-
-        //权限为2,则将所有学生信息注入
-        //将学生信息以key为id转为map,方便使用
-        if (user.getAuthority().equals("2")){
-            userList = userService.findStudentByClass(user.getClassId());
-            for (User userInfo:userList) {
-                userMap.put(userInfo.getUserId(),userInfo);
+        if(!user.getAuthority().equals("3")){
+            if(user.getAuthority().equals("4")){
+                String studentCode = "1" + user.getUserCode().substring(1);
+                user = userService.findUserByCode(studentCode);
             }
-            model.addAttribute("studentList",userList);
 
-            //获取班内学生第一场考试所有成绩
-            String examId = (examList.size() > 0 ? examList.get(0).getExamId() : 100) + "";
-            String lastExamId = (examList.size() > 0 ? examList.get(examList.size()-1).getExamId() : 100) + "";
-            ResultList examAllScoreResultList =scoreController.findAllScoreByExam(examId,request);
-            ResultList examAllScoreResultLastList =scoreController.findAllScoreByExam(lastExamId,request);
+            //注入课程和考试信息
+            List<Subject> subjectList = subjectService.findSubjectAll();
+            List<Exam> examList = examService.findExamAll();
+            model.addAttribute("subjectList",subjectList);
+            model.addAttribute("examList",examList);
 
-            int index = 0;
-            for (int i = 0; i < userList.size(); i++) {
-                ResultList result = scoreController.findScoreByExamAndStudent(lastExamId,(userList.get(i).getUserId()+""),request);
-                if (examAllScoreResultLastList.getStringList().contains(result.getUsername())){
-                    result.getMapList().add(new ResultMap(
-                            examAllScoreResultLastList.getIntegerList().get(index),
-                            "总分"
-                    ));
-                    index++;
+            //权限为2,则将所有学生信息注入
+            //将学生信息以key为id转为map,方便使用
+            if (user.getAuthority().equals("2")){
+                userList = userService.findStudentByClass(user.getClassId());
+                for (User userInfo:userList) {
+                    userMap.put(userInfo.getUserId(),userInfo);
                 }
-                examAllScoreResultList.getListmap().put(userList.get(i),result.getMapList());
+                model.addAttribute("studentList",userList);
+
+                //获取班内学生第一场考试所有成绩
+                String examId = (examList.size() > 0 ? examList.get(0).getExamId() : 100) + "";
+                String lastExamId = (examList.size() > 0 ? examList.get(examList.size()-1).getExamId() : 100) + "";
+                ResultList examAllScoreResultList =scoreController.findAllScoreByExam(examId,request);
+                ResultList examAllScoreResultLastList =scoreController.findAllScoreByExam(lastExamId,request);
+
+                int index = 0;
+                for (int i = 0; i < userList.size(); i++) {
+                    ResultList result = scoreController.findScoreByExamAndStudent(lastExamId,(userList.get(i).getUserId()+""),request);
+                    if (examAllScoreResultLastList.getStringList().contains(result.getUsername())){
+                        result.getMapList().add(new ResultMap(
+                                examAllScoreResultLastList.getIntegerList().get(index),
+                                "总分"
+                        ));
+                        index++;
+                    }
+                    examAllScoreResultList.getListmap().put(userList.get(i),result.getMapList());
+                }
+                model.addAttribute("examAllScoreResultList",examAllScoreResultList);
             }
-            model.addAttribute("examAllScoreResultList",examAllScoreResultList);
-        }
 
-        //获取总成绩
-        score = new Score();
-        score.setOnwerId(user.getUserId());
-        Result totalScoreResult = scoreService.FindScore(score);
-        ResultList totalResultList = toResultList(totalScoreResult,"总成绩变化图",ChartEnum.LINECHART.getType());
-        model.addAttribute("totalResultList",totalResultList);
-
-        //获取科目成绩
-        score = new Score();
-        if (user.getAuthority().equals("2")){
-            score.setOnwerId(userList.get(0).getUserId());
-        } else {
+            //获取总成绩
+            score = new Score();
             score.setOnwerId(user.getUserId());
-        }
-        score.setSubjectId(subjectList.get(0).getSubjectId());
-        Result subjectScoreResult = scoreService.FindScore(score);
-        ResultList subjectResultList = toResultList(subjectScoreResult,"各科目成绩",ChartEnum.LINECHART.getType());
-        model.addAttribute("subjectResultList",subjectResultList);
+            Result totalScoreResult = scoreService.FindScore(score);
+            ResultList totalResultList = toResultList(totalScoreResult,"总成绩变化图",ChartEnum.LINECHART.getType());
+            model.addAttribute("totalResultList",totalResultList);
 
-        //获取考试中某一场的详细科目成绩
-        score = new Score();
-        String userName = "";
-        if (user.getAuthority().equals("2")){
-            userName = userList.get(0).getUserName();
-            score.setOnwerId(userList.get(0).getUserId());
+            //获取科目成绩
+            score = new Score();
+            if (user.getAuthority().equals("2")){
+                score.setOnwerId(userList.get(0).getUserId());
+            } else {
+                score.setOnwerId(user.getUserId());
+            }
+            score.setSubjectId(subjectList.get(0).getSubjectId());
+            Result subjectScoreResult = scoreService.FindScore(score);
+            ResultList subjectResultList = toResultList(subjectScoreResult,"各科目成绩",ChartEnum.LINECHART.getType());
+            model.addAttribute("subjectResultList",subjectResultList);
+
+            //获取考试中某一场的详细科目成绩
+            score = new Score();
+            String userName = "";
+            if (user.getAuthority().equals("2")){
+                userName = userList.get(0).getUserName();
+                score.setOnwerId(userList.get(0).getUserId());
+            } else {
+                score.setOnwerId(user.getUserId());
+            }
+            score.setExamId(examList.get(0).getExamId());
+            Result examScoreResult = scoreService.FindScore(score);
+            ResultList examResultList = toResultList(examScoreResult,"考试成绩详情",ChartEnum.ROSECHART.getType());
+            examResultList.setUsername(userName);
+            model.addAttribute("examResultList",examResultList);
         } else {
-            score.setOnwerId(user.getUserId());
+            List<UserClass> userClasses = classService.findAllClass();
+            model.addAttribute("userClasses",userClasses);
         }
-        score.setExamId(examList.get(0).getExamId());
-        Result examScoreResult = scoreService.FindScore(score);
-        ResultList examResultList = toResultList(examScoreResult,"考试成绩详情",ChartEnum.ROSECHART.getType());
-        examResultList.setUsername(userName);
-        model.addAttribute("examResultList",examResultList);
+
 
         if (user.getAuthority().equals("2")){
             return "teacher";
         } else if (user.getAuthority().equals("3")){
-            return "";
+            return "manager";
         } else {
             return "user";
         }

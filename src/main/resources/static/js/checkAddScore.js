@@ -181,3 +181,30 @@ function changeScore(){
         toastr.error('请检查数据,每项数据不填或为大于0小于100的整数!');
     }
 }
+
+function cencerChangeScore() {
+    math_Boolean = true;
+    chinese_Boolean = true;
+    english_Boolean = true;
+    physical_Boolean = true;
+    chemistry_Boolean = true;
+    biology_Boolean = true;
+    geography_Boolean = true;
+    history_Boolean = true;
+    politics_Boolean = true;
+    sum_Boolean = false;
+    $('.politics_hint').html(" ")
+    $('.history_hint').html(" ")
+    $('.geography_hint').html(" ")
+    $('.biology_hint').html(" ")
+    $('.chemistry_hint').html(" ")
+    $('.physical_hint').html(" ")
+    $('.english_hint').html(" ")
+    $('.chinese_hint').html(" ")
+    $('.math_hint').html(" ")
+    // 清空文本框内容
+    $("#myModal").modal('hide');
+    for(var i=0;i<document.getElementsByTagName("input").length;i++){
+        document.getElementsByTagName("input")[i].value="";
+    }
+}
