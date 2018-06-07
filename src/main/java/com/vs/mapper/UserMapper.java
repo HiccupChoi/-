@@ -56,4 +56,6 @@ public interface UserMapper {
     void subUserTimesOne(@Param("user") User user);
 
     int cancelUser(@Param("userId") int userId);
+
+    List<User> findUserByAuthority(String authority);
 }

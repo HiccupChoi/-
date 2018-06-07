@@ -88,4 +88,6 @@ public interface UserDao {
      * @return
      */
     List<User> findStudentsByClassId(Integer classId);
+
+    List<User> findUserByAuthority(String authority);
 }

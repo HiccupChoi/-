@@ -45,22 +45,87 @@
 
     <div id="right-side">
         <div id="first" class="active">
-            <table class="table table-striped">
-                <tr>
-                    <th>姓名</th>
-                    <th>操作</th>
-                </tr>
-                <tr th:each="examScore : ${examAllScoreResultList.listmap}">
-                    <td th:text="${examScore.key.userName}"></td>
-                    <td>
-                        <a style="cursor: pointer">无效化</a>
-                        <a style="cursor: pointer">查看详情</a>
-                    </td>
-                </tr>
-            </table>
+            <div style="margin-top: 50px;">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="border-bottom: 0px">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">学生</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">老师</a></li>
+                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">家长</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto">
+                            <tr>
+                                <th>学号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr th:each="StudentInfo:${Student}">
+                                <td th:text="${StudentInfo.userCode}"></td>
+                                <td th:text="${StudentInfo.userName}"></td>
+                                <td th:if="${StudentInfo.gender == '1'}">男</td>
+                                <td th:if="${StudentInfo.gender == '2'}">女</td>
+                                <td th:text="${StudentInfo.className}"></td>
+                                <td>
+                                    <a style="cursor: pointer">无效化</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto">
+                            <tr>
+                                <th>工号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr th:each="teachInfo:${teach}">
+                                <td th:text="${teachInfo.userCode}"></td>
+                                <td th:text="${teachInfo.userName}"></td>
+                                <td th:if="${teachInfo.gender == '1'}">男</td>
+                                <td th:if="${teachInfo.gender == '2'}">女</td>
+                                <td th:text="${teachInfo.className}"></td>
+                                <td>
+                                    <a style="cursor: pointer">无效化</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="messages">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto">
+                            <tr>
+                                <th>学号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                                <th>操作</th>
+                            </tr>
+                            <tr th:each="preantsInfo:${preants}">
+                                <td th:text="${preantsInfo.userCode}"></td>
+                                <td th:text="${preantsInfo.userName}+'的父母'"></td>
+                                <td th:if="${preantsInfo.gender == '1'}">男</td>
+                                <td th:if="${preantsInfo.gender == '2'}">女</td>
+                                <td th:text="${preantsInfo.className}"></td>
+                                <td>
+                                    <a style="cursor: pointer">无效化</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
         <div id="second">
-            <form class="form-inline">
+            <form class="form-inline" style="margin-top: 50px">
                 <div class="form-group">
                     <div class="input-group" style="width: 400px; margin:10px 0">
                         <div class="input-group-addon">姓名</div>

@@ -20,4 +20,6 @@ public interface UserService {
     User findUserByCode(String code);
 
     List<User> findStudentByClass(Integer classId);
+
+    List<User> findUserByAuthority(String authority);
 }

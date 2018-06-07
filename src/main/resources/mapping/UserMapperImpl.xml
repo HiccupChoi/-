@@ -34,6 +34,16 @@
         where user_code = #{userCode}
         and dl != 1
     </select>
+
+    <select id="findUserByAuthority"  resultType="com.vs.entity.User" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where authority = #{authority}
+        and dl != 1
+        order by user_code
+    </select>
+
     <select id="checkThreeCode"  resultType="java.lang.Integer" parameterType="com.vs.entity.User" >
         select
         count(*)

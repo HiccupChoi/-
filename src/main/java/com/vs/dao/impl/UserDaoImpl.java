@@ -78,4 +78,9 @@ public class UserDaoImpl implements UserDao {
     public List<User> findStudentsByClassId(Integer classId) {
         return userMapper.findStudentsByClassId(classId);
     }
+
+    @Override
+    public List<User> findUserByAuthority(String authority) {
+        return userMapper.findUserByAuthority(authority);
+    }
 }

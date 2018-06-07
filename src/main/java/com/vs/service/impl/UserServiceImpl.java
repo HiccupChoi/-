@@ -189,4 +189,9 @@ public class UserServiceImpl implements UserService {
         return userDao.findStudentsByClassId(classId);
     }
 
+    @Override
+    public List<User> findUserByAuthority(String authority) {
+        return userDao.findUserByAuthority(authority);
+    }
+
 }

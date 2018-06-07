@@ -42,6 +42,7 @@ public class MainPageController {
     private Map<Integer,Subject> subjectMap = new HashMap<>();
     private Map<Integer,Exam> examMap = new HashMap<>();
     private Map<Integer,Score> scoreMap = new HashMap<>();
+    private Map<Integer,UserClass> userClassMap = new HashMap<>();
     /**
      * 学生/家长 进入个人首页
      * @param model
@@ -137,7 +138,22 @@ public class MainPageController {
             model.addAttribute("examResultList",examResultList);
         } else {
             List<UserClass> userClasses = classService.findAllClass();
+            for (int i = 0; i < userClasses.size(); i++) {
+                userClassMap.put(userClasses.get(i).getClassId(),userClasses.get(i));
+            }
             model.addAttribute("userClasses",userClasses);
+            List<User> Student = userService.findUserByAuthority("1");
+            for (int i = 0; i < Student.size(); i++) {
+                Student.get(i).setClassName(userClassMap.get(Student.get(i).getClassId()).getClassName());
+            }
+            model.addAttribute("Student",Student);
+            List<User> teach = userService.findUserByAuthority("2");
+            for (int i = 0; i < teach.size(); i++) {
+                teach.get(i).setClassName(userClassMap.get(teach.get(i).getClassId()).getClassName());
+            }
+            model.addAttribute("teach",teach);
+            List<User> preants = userService.findUserByAuthority("3");
+            model.addAttribute("preants",preants);
         }
 
 

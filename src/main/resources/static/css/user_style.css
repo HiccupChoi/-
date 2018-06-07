@@ -187,14 +187,23 @@ option{
 	-ms-flex-align: center;
 	align-items: center;
 	-webkit-box-pack: center;
+	/*-webkit-justify-content: center;*/
+	/*-ms-flex-pack: center;*/
+	/*justify-content: center;*/
+	/*-webkit-box-orient: vertical;*/
+	/*-webkit-box-direction: normal;*/
+	/*-webkit-flex-direction: column;*/
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+
+#fourth{
 	-webkit-justify-content: center;
 	-ms-flex-pack: center;
 	justify-content: center;
 	-webkit-box-orient: vertical;
 	-webkit-box-direction: normal;
 	-webkit-flex-direction: column;
-	-ms-flex-direction: column;
-	flex-direction: column;
 }
 
 #right-side #first h1,
@@ -248,7 +257,7 @@ option{
 }
 .Student_list{
 	width: 780px;
-	margin: 0 auto;
+	margin: 50px auto 0 auto;
 }
 /*h1 {
     font-size: 2em;
