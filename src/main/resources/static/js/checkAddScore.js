@@ -28,6 +28,7 @@ $('#txt_chinese').blur(function() {
     } else {
         $('.chinese_hint').html("×").css("color", "red");
         chinese_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -39,6 +40,7 @@ $('#txt_english').blur(function() {
     } else {
         $('.english_hint').html("×").css("color", "red");
         english_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -50,6 +52,7 @@ $('#txt_physical').blur(function() {
     } else {
         $('.physical_hint').html("×").css("color", "red");
         physical_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -61,6 +64,7 @@ $('#txt_chemistry').blur(function() {
     } else {
         $('.chemistry_hint').html("×").css("color", "red");
         chemistry_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -72,6 +76,7 @@ $('#txt_biology').blur(function() {
     } else {
         $('.biology_hint').html("×").css("color", "red");
         biology_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -83,6 +88,7 @@ $('#txt_geography').blur(function() {
     } else {
         $('.geography_hint').html("×").css("color", "red");
         geography_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -94,6 +100,7 @@ $('#txt_history').blur(function() {
     } else {
         $('.history_hint').html("×").css("color", "red");
         history_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
@@ -105,10 +112,12 @@ $('#txt_politics').blur(function() {
     } else {
         $('.politics_hint').html("×").css("color", "red");
         politics_Boolean = false;
+        sum_Boolean = false;
     }
 });
 
 function checkAllNone() {
+    debugger
     if ($("#txt_math").val().length < 1 &
         $("#txt_chinese").val().length <1 &
         $("#txt_english").val().length < 1 &
@@ -126,6 +135,7 @@ function checkAllNone() {
 }
 
 function changeScore(){
+    debugger
     if (math_Boolean & chinese_Boolean & english_Boolean & physical_Boolean & chemistry_Boolean & biology_Boolean & geography_Boolean & history_Boolean & politics_Boolean & sum_Boolean & checkAllNone() == true){
 
         $.ajax({
@@ -145,8 +155,9 @@ function changeScore(){
             success: function (result) {
                 var json = eval("("+result+")");//将json类型字符串转换为json对象
                 if (json.success){
-                    alert("修改成功");
                     $("#myModal").modal('hide');
+                    toastr.success('操作成功!');
+                    window.location.reload();
                 }else{
                     document.getElementById("userspan").innerHTML = json.msg;
                 }
@@ -157,16 +168,16 @@ function changeScore(){
                 }
             },
             error : function() {
-                alert("网络原因,请重新登录!");
+                toastr.error('网络原因,请重试!');
             }
         });
         // 清空文本框内容
         for(var i=0;i<document.getElementsByTagName("input").length;i++){
             document.getElementsByTagName("input")[i].value="";
         }
-    }else if(sum_Boolean == false || checkAllNone() == false){
-        alert("最少填入一项数据");
+    }else if(sum_Boolean == false && checkAllNone() == false){
+        toastr.error('最少填入一项数据');
     } else {
-        alert("请检查数据,每项数据不填或为大于0小于100的整数!")
+        toastr.error('请检查数据,每项数据不填或为大于0小于100的整数!');
     }
 }

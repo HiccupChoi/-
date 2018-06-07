@@ -5,5 +5,6 @@
         select
         <include refid="Base_Column_List" />
         from subject
+        order by subject_id
     </select>
 </mapper>

@@ -86,14 +86,19 @@ public class MainPageController {
 
             //获取班内学生第一场考试所有成绩
             String examId = (examList.size() > 0 ? examList.get(0).getExamId() : 100) + "";
+            String lastExamId = (examList.size() > 0 ? examList.get(examList.size()-1).getExamId() : 100) + "";
             ResultList examAllScoreResultList =scoreController.findAllScoreByExam(examId,request);
+            ResultList examAllScoreResultLastList =scoreController.findAllScoreByExam(lastExamId,request);
+
+            int index = 0;
             for (int i = 0; i < userList.size(); i++) {
-                ResultList result = scoreController.findScoreByExamAndStudent("1",(userList.get(i).getUserId()+""),request);
-                if (i < examAllScoreResultList.getIntegerList().size()){
+                ResultList result = scoreController.findScoreByExamAndStudent(lastExamId,(userList.get(i).getUserId()+""),request);
+                if (examAllScoreResultLastList.getStringList().contains(result.getUsername())){
                     result.getMapList().add(new ResultMap(
-                            examAllScoreResultList.getIntegerList().get(i),
+                            examAllScoreResultLastList.getIntegerList().get(index),
                             "总分"
                     ));
+                    index++;
                 }
                 examAllScoreResultList.getListmap().put(userList.get(i),result.getMapList());
             }

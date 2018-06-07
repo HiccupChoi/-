@@ -66,6 +66,11 @@ public class ScoreServiceImpl implements ScoreService {
      */
     @Override
     public int AddScore(Score score) {
+        List<Score> scores = scoreDao.FindScore(score);
+        if (scores.size() > 0){
+            score.setScoreId(scores.get(0).getScoreId());
+            return scoreDao.updateByPrimaryKeySelective(score);
+        }
         return scoreDao.insertSelective(score);
     }
 

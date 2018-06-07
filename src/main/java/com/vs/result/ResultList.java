@@ -2,9 +2,9 @@ package com.vs.result;
 
 import com.vs.entity.User;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 用作返回成绩
@@ -13,7 +13,7 @@ public class ResultList {
     private List<String> stringList;
     private List<Integer> integerList;
     private List<ResultMap> mapList;
-    private Map<User,List<ResultMap>> Listmap = new HashMap<>();
+    private final Map<User, List<ResultMap>> Listmap = new TreeMap<>((User u1, User u2) -> u1.getUserId().compareTo(u2.getUserId()));
     private String title;
     private String username;
     private Integer min;
@@ -21,10 +21,6 @@ public class ResultList {
 
     public Map<User, List<ResultMap>> getListmap() {
         return Listmap;
-    }
-
-    public void setListmap(Map<User, List<ResultMap>> listmap) {
-        Listmap = listmap;
     }
 
     public Integer getSunScore() {

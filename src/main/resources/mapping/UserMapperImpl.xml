@@ -56,6 +56,7 @@
         from user
         where class_id = #{classId,jdbcType=INTEGER}
         and dl = 0 AND authority = 1
+        order by user_id
     </select>
     <update id="subUserTimesOne" parameterType="com.vs.entity.User" >
         update user

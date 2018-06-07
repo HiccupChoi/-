@@ -47,6 +47,7 @@ $('.reg_name').blur(function () {
         }
         user_name_Boolean = true;
     } else {
+        $('.user_name_hint').html("×").css("color", "red");
         user_name_Boolean = false;
     }
 });
@@ -80,7 +81,7 @@ function checkThreeCode(){
             }
         },
         error : function() {
-            alert("网络故障,请重试!");
+            toastr.error('网络原因,请重试!');
         }
     });
 }
@@ -104,7 +105,7 @@ $('.red_button').click(function() {
                 }
             },
             error : function() {
-                alert("网络故障,请重试!");
+                toastr.error('网络原因,请重试!');
             }
         });
 
@@ -114,7 +115,7 @@ $('.red_button').click(function() {
         user_name_Boolean = false;
         user_code_Boolean = false;
 	} else {
-		alert("请正确填写所有信息");
+        toastr.error('请正确填写所有信息');
 		return false;
 	}
 });

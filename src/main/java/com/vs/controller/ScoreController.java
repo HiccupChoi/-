@@ -236,14 +236,18 @@ public class ScoreController {
         if (type == ChartEnum.ROSECHART.getType() || type == ChartEnum.LINECHARWITHZOOM.getType()){
             List<ResultMap> resultMapList = new ArrayList<>();
             int sumScore = 0;
+            int index = 0;
             for (int i = 0; i < subjectList.size(); i++) {
                 int score = 0;
 
                 if (totalScoreList != null && totalScoreList.size() > 0){
-                    if (i < totalScoreList.size() && (totalScoreList.get(i).getSubjectId() == 10)){
+                    if (scoreMap.get(subjectList.get(i).getSubjectId()) != null && totalScoreList.get(index).getSubjectId() == 10){
                         continue;
                     }
                     score = scoreMap.get(subjectList.get(i).getSubjectId()) != null ? scoreMap.get(subjectList.get(i).getSubjectId()).getScore() : 0 ;
+                    if (scoreMap.get(subjectList.get(i).getSubjectId()) != null){
+                        index++;
+                    }
                 }
 
                 sumScore += score;
@@ -265,39 +269,87 @@ public class ScoreController {
 
 
     @RequestMapping("/addScore")
-    public Result addScore(String math,String chinese,String english,String physical,String chemistry,String biology,String geography,String history,String politics){
+    public Result addScore(String math,String chinese,String english,String physical,String chemistry,String biology,String geography,String history,String politics,HttpServletRequest request){
         Integer[] integerArray = {
-//                addScore.getChinese(),
-//                addScore.getMath(),
-//                addScore.getEnglish(),
-//                addScore.getPhysical(),
-//                addScore.getChemistry(),
-//                addScore.getBiology(),
-//                addScore.getHistory(),
-//                addScore.getPolitics(),
-//                addScore.getGeography(),
-//                addScore.getSumScore()
+                //TODO 保证顺序和数据库顺序相同
+            math.isEmpty() ? null : Integer.parseInt(math),
+            chinese.isEmpty() ? null : Integer.parseInt(chinese),
+            english.isEmpty() ? null : Integer.parseInt(english),
+            physical.isEmpty() ? null : Integer.parseInt(physical),
+            chemistry.isEmpty() ? null : Integer.parseInt(chemistry),
+            biology.isEmpty() ? null : Integer.parseInt(biology),
+            geography.isEmpty() ? null : Integer.parseInt(geography),
+            history.isEmpty() ? null : Integer.parseInt(history),
+            politics.isEmpty() ? null : Integer.parseInt(politics)
         };
 
         List<Subject> subjectList = subjectService.findSubjectAll();
+        List<Exam> examList = examService.findExamAll();
 
         Score score = new Score();
-        score.setExamId(1);
-        score.setOnwerId(5);
-
-        Integer sumScore = 0;
         for (int i = 0; i < subjectList.size() - 1; i++) {
+            if (integerArray[i] == null){
+                continue;
+            }
+            score = new Score();
+            score.setExamId(examList.get(examList.size() - 1).getExamId());
+            score.setOnwerId(Integer.parseInt((String) request.getSession().getAttribute("StudentId")));
             score.setSubjectId(subjectList.get(i).getSubjectId());
             score.setScore(integerArray[i]);
             scoreService.AddScore(score);
-            sumScore += integerArray[i];
         }
 
+        score = new Score();
+        int sumScore = 0;
+        score.setExamId(examList.get(examList.size() - 1).getExamId());
+        score.setOnwerId(Integer.parseInt((String) request.getSession().getAttribute("StudentId")));
+        List<Score> scores = (List<Score>)scoreService.FindScore(score).getData();
+        for (Score scoreA:scores) {
+            if (scoreA.getSubjectId() != 10){
+                sumScore += scoreA.getScore();
+            }
+        }
         score.setSubjectId(subjectList.get(subjectList.size()-1).getSubjectId());
         score.setScore(sumScore);
         scoreService.AddScore(score);
 
+        Result result = new Result();
+        result.setSuccess(true);
+
+        return result;
+    }
+
+    @RequestMapping("/addUserIdToSession")
+    private Result addUserIdToSession(String StudentId,HttpServletRequest request){
+        request.getSession().setAttribute("StudentId",StudentId);
         return null;
     }
 
+
+    //添加分数工具(随机)
+    @RequestMapping("/addScoreFalse")
+    public void addScoreFalse(){
+        Score score = new Score();
+        for (int i = 1; i < 9; i++) {
+            int sum = 0;
+            for (int j = 1; j < 10; j++) {
+                score = new Score();
+                score.setExamId(i);
+                score.setSubjectId(j);
+                int scoreInt = 0;
+                while (true){
+                    scoreInt = (int)(Math.random()*99) + 1 ;
+                    if (scoreInt > 60) break;
+                }
+                sum += scoreInt;
+                score.setScore(scoreInt);
+                score.setOnwerId(18);
+                scoreService.AddScore(score);
+            }
+            score.setScore(sum);
+            score.setSubjectId(10);
+            scoreService.AddScore(score);
+        }
+    }
 }
+

@@ -17,7 +17,7 @@
                 <div class="icon active">
                     <i class="iconfont" style="font-size: 20px;">&#xe614;</i>
                 </div>
-                <span>班级内学生成绩</span>
+                <span>修改学生信息</span>
             </li>
             <li class="pay">
                 <div class="icon">
@@ -29,7 +29,7 @@
                 <div class="icon">
                     <i class="iconfont" style="font-size: 20px;">&#xe611;</i>
                 </div>
-                <span>修改学生信息</span>
+                <span>班级内学生成绩</span>
             </li>
             <li class="ship">
                 <div class="icon">
@@ -46,12 +46,45 @@
 
     <div id="right-side">
         <div id="first" class="active">
-            <select class="subject_select" id="exam_all_select" onchange='examChangeAllscore(this[selectedIndex].value);'>
-                <th:block th:each="exam : ${examList}">
-                    <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
-                </th:block>
-            </select>
-            <div id="StudentTotalScore" style="width: 750px;height:400px;"></div>
+            <div class="Student_list">
+                <span>*只能修改最后一场考试信息</span>
+                <table class="table table-striped">
+                    <tr>
+                        <th>姓名</th>
+                        <th:block  th:each="subject : ${subjectList}">
+                            <th th:text="${subject.subjectName}"></th>
+                        </th:block>
+                        <th>操作</th>
+                    </tr>
+                    <tr th:each="examScore : ${examAllScoreResultList.listmap}">
+                        <td th:text="${examScore.key.userName}"></td>
+                        <th:block th:each="score : ${examScore.value}">
+                            <td th:if="${score.value} != 0" th:text="${score.value}"></td>
+                            <td th:if="${score.value} == 0">-</td>
+                        </th:block>
+                        <td><a style="cursor: pointer" th:onclick="'javascript:toclick(\''+${examScore.key}+'\',\''+${examScore.key.userId}+'\');'">修改</a></td>
+                    </tr>
+                </table>
+                <!--<nav aria-label="Page navigation">-->
+                <!--<ul class="pagination">-->
+                <!--<li class="disabled">-->
+                <!--<a href="#" aria-label="Previous">-->
+                <!--<span aria-hidden="true">&laquo;</span>-->
+                <!--</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">1</a></li>-->
+                <!--<li><a href="#">2</a></li>-->
+                <!--<li><a href="#">3</a></li>-->
+                <!--<li><a href="#">4</a></li>-->
+                <!--<li><a href="#">5</a></li>-->
+                <!--<li>-->
+                <!--<a href="#" aria-label="Next">-->
+                <!--<span aria-hidden="true">&raquo;</span>-->
+                <!--</a>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</nav>-->
+            </div>
         </div>
         <div id="second">
             <div style="width: 220px;height: 50px">
@@ -73,44 +106,14 @@
             <div id="StudentSubjectScore" style="width: 750px;height:400px;"></div>
         </div>
         <div id="third">
-            <div class="Student_list">
-                <table class="table table-striped">
-                    <tr>
-                        <th>姓名</th>
-                        <th:block  th:each="subject : ${subjectList}">
-                            <th th:text="${subject.subjectName}"></th>
-                        </th:block>
-                        <th>操作</th>
-                    </tr>
-                    <tr th:each="examScore : ${examAllScoreResultList.listmap}">
-                        <td th:text="${examScore.key.userName}"></td>
-                        <th:block th:each="score : ${examScore.value}">
-                            <td th:if="${score.value} != 0" th:text="${score.value}"></td>
-                            <td th:if="${score.value} == 0">-</td>
-                        </th:block>
-                        <td><a style="cursor: pointer" th:onclick="'javascript:toclick(\''+${examScore.key}+'\');'">修改</a></td>
-                    </tr>
-                </table>
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="disabled">
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+            <div class="Select_box">
+                <select class="subject_select  form-control" id="exam_all_select" onchange='examChangeAllscore(this[selectedIndex].value);'>
+                    <th:block th:each="exam : ${examList}">
+                        <option th:value="${exam.examId}" th:text="${exam.examName}"></option>
+                    </th:block>
+                </select>
             </div>
+            <div id="StudentTotalScore" style="width: 750px;height:400px;"></div>
         </div>
         <div id="fourth">
             <ul>
@@ -317,21 +320,43 @@
             }
         });
     }
+    
+    function examChangeAllStudent(selectValue) {
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/findAllScoreByExam',
+            data: {'selectValue':selectValue},
+            success: function (result) {
+                var json = eval("("+result+")");
 
-    function toclick(Student) {
+            },
+            error:function () {
+                alert("网络延迟较大，请重试");
+            }
+        });
+    }
+
+    function toclick(Student,studentId) {
         var Map = [[${examAllScoreResultList.listmap}]];
         var studentScore = Map[Student];
         $("#myModalLabel").text("修改成绩");
         $('#myModal').modal();
-        $('#txt_math').attr('placeholder','原分数:' + studentScore[0].value);
-        $('#txt_chinese').attr('placeholder','原分数:' + studentScore[1].value);
-        $('#txt_english').attr('placeholder','原分数:' + studentScore[2].value);
-        $('#txt_physical').attr('placeholder','原分数:' + studentScore[3].value);
-        $('#txt_chemistry').attr('placeholder','原分数:' + studentScore[4].value);
-        $('#txt_biology').attr('placeholder','原分数:' + studentScore[5].value);
-        $('#txt_geography').attr('placeholder','原分数:' + studentScore[6].value);
-        $('#txt_history').attr('placeholder','原分数:' + studentScore[7].value);
-        $('#txt_politics').attr('placeholder','原分数:' + studentScore[8].value);
+        $('#txt_math').attr('placeholder', '原分数:' + studentScore[0].value);
+        $('#txt_chinese').attr('placeholder', '原分数:' + studentScore[1].value);
+        $('#txt_english').attr('placeholder', '原分数:' + studentScore[2].value);
+        $('#txt_physical').attr('placeholder', '原分数:' + studentScore[3].value);
+        $('#txt_chemistry').attr('placeholder', '原分数:' + studentScore[4].value);
+        $('#txt_biology').attr('placeholder', '原分数:' + studentScore[5].value);
+        $('#txt_geography').attr('placeholder', '原分数:' + studentScore[6].value);
+        $('#txt_history').attr('placeholder', '原分数:' + studentScore[7].value);
+        $('#txt_politics').attr('placeholder', '原分数:' + studentScore[8].value);
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "/addUserIdToSession",
+            data: {"StudentId":studentId},
+        });
     }
 </script>
 </body>
