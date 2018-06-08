@@ -49,20 +49,22 @@
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist" style="border-bottom: 0px">
-                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">学生</a></li>
-                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">老师</a></li>
-                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">家长</a></li>
+                    <li role="presentation" class="active"><a href="#student" aria-controls="home" role="tab" data-toggle="tab">学生</a></li>
+                    <li role="presentation"><a href="#teacher" aria-controls="profile" role="tab" data-toggle="tab">老师</a></li>
+                    <li role="presentation"><a href="#parents" aria-controls="messages" role="tab" data-toggle="tab">家长</a></li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="home">
-                        <table class="table table-striped" style="width: 700px; margin: 0 auto">
+                    <div role="tabpanel" class="tab-pane active" id="student">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto;">
                             <tr>
                                 <th>学号</th>
                                 <th>姓名</th>
                                 <th>性别</th>
                                 <th>班级</th>
+                                <th>激活码</th>
+                                <th  style="text-align: center">次数</th>
                                 <th>操作</th>
                             </tr>
                             <tr th:each="StudentInfo:${Student}">
@@ -71,13 +73,15 @@
                                 <td th:if="${StudentInfo.gender == '1'}">男</td>
                                 <td th:if="${StudentInfo.gender == '2'}">女</td>
                                 <td th:text="${StudentInfo.className}"></td>
+                                <td th:text="${StudentInfo.activationCode}"></td>
+                                <td th:text="${StudentInfo.times}" style="text-align: center"></td>
                                 <td>
-                                    <a style="cursor: pointer">无效化</a>
+                                    <a style="cursor: pointer" th:onclick="'javascript:toclickinvalid(\''+${StudentInfo.userCode}+'\',\'1\');'">无效化</a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="profile">
+                    <div role="tabpanel" class="tab-pane" id="teacher">
                         <table class="table table-striped" style="width: 700px; margin: 0 auto">
                             <tr>
                                 <th>工号</th>
@@ -93,18 +97,17 @@
                                 <td th:if="${teachInfo.gender == '2'}">女</td>
                                 <td th:text="${teachInfo.className}"></td>
                                 <td>
-                                    <a style="cursor: pointer">无效化</a>
+                                    <a style="cursor: pointer" th:onclick="'javascript:toclickinvalid(\''+${teachInfo.userCode}+'\',\'2\');'">无效化</a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="messages">
+                    <div role="tabpanel" class="tab-pane" id="parents">
                         <table class="table table-striped" style="width: 700px; margin: 0 auto">
                             <tr>
-                                <th>学号</th>
+                                <th>账号</th>
                                 <th>姓名</th>
                                 <th>性别</th>
-                                <th>班级</th>
                                 <th>操作</th>
                             </tr>
                             <tr th:each="preantsInfo:${preants}">
@@ -112,9 +115,8 @@
                                 <td th:text="${preantsInfo.userName}+'的父母'"></td>
                                 <td th:if="${preantsInfo.gender == '1'}">男</td>
                                 <td th:if="${preantsInfo.gender == '2'}">女</td>
-                                <td th:text="${preantsInfo.className}"></td>
                                 <td>
-                                    <a style="cursor: pointer">无效化</a>
+                                    <a style="cursor: pointer" th:onclick="'javascript:toclickinvalid(\''+${preantsInfo.userCode}+'\',\'3\');'">无效化</a>
                                 </td>
                             </tr>
                         </table>
@@ -125,16 +127,16 @@
 
         </div>
         <div id="second">
-            <form class="form-inline" style="margin-top: 50px">
+            <form class="form-inline" id="createUser" style="margin-top: 50px">
                 <div class="form-group">
                     <div class="input-group" style="width: 400px; margin:10px 0">
                         <div class="input-group-addon">姓名</div>
-                        <input type="text" class="form-control" id="exampleInputAmount" placeholder="2-4个中文">
+                        <input type="text" name="userName" class="form-control" id="exampleInputAmount" placeholder="2-4个中文">
                     </div>
                     <div class="input-group" style="width: 280px; margin:10px 0">
                         <div class="input-group-addon">班级</div>
                         <div class="Select_box">
-                            <select class="subject_select  form-control"  onchange='examChangeAllscore(this[selectedIndex].value);'>
+                            <select class="subject_select  form-control" name="classId"  onchange='examChangeAllscore(this[selectedIndex].value);'>
                                 <th:block th:each="class : ${userClasses}">
                                     <option th:value="${class.classId}" th:text="${class.className}"></option>
                                 </th:block>
@@ -144,7 +146,7 @@
                     <div class="input-group" style="width: 200px; margin:10px 0">
                         <div class="input-group-addon">性别</div>
                         <div class="Select_box">
-                            <select class="subject_select  form-control">
+                            <select class="subject_select  form-control" name="gender">
                                     <option th:value="1">男</option>
                                     <option th:value="2">女</option>
                             </select>
@@ -154,17 +156,79 @@
                     <div class="input-group" style="width: 200px; margin:10px 0">
                         <div class="input-group-addon">用户</div>
                         <div class="Select_box">
-                            <select class="subject_select  form-control">
+                            <select class="subject_select  form-control" name="authority">
                                 <option th:value="1">学生</option>
                                 <option th:value="2">老师</option>
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-default" style="width: 120px; margin: 0 auto;">确认新增</button>
+                    <button class="btn btn-default" style="width: 120px; margin: 0 auto;" onclick="createUser()">确认新增</button>
                 </div>
             </form>
         </div>
         <div id="third">
+            <div style="margin-top: 50px;">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" style="border-bottom: 0px">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">学生</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">老师</a></li>
+                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">家长</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto;">
+                            <tr>
+                                <th>学号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                            </tr>
+                            <tr th:each="InvalidStudentInfo:${InvalidStudent}">
+                                <td th:text="${InvalidStudentInfo.userCode}"></td>
+                                <td th:text="${InvalidStudentInfo.userName}"></td>
+                                <td th:if="${InvalidStudentInfo.gender == '1'}">男</td>
+                                <td th:if="${InvalidStudentInfo.gender == '2'}">女</td>
+                                <td th:text="${InvalidStudentInfo.className}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto">
+                            <tr>
+                                <th>工号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>班级</th>
+                            </tr>
+                            <tr th:each="InvalidTeacherInfo:${InvalidTeacher}">
+                                <td th:text="${InvalidTeacherInfo.userCode}"></td>
+                                <td th:text="${InvalidTeacherInfo.userName}"></td>
+                                <td th:if="${InvalidTeacherInfo.gender == '1'}">男</td>
+                                <td th:if="${InvalidTeacherInfo.gender == '2'}">女</td>
+                                <td th:text="${InvalidTeacherInfo.className}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="messages">
+                        <table class="table table-striped" style="width: 700px; margin: 0 auto">
+                            <tr>
+                                <th>账号</th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                            </tr>
+                            <tr th:each="InvalidParentsInfo:${InvalidParents}">
+                                <td th:text="${InvalidParentsInfo.userCode}"></td>
+                                <td th:text="${InvalidParentsInfo.userName}+'的父母'"></td>
+                                <td th:if="${InvalidParentsInfo.gender == '1'}">男</td>
+                                <td th:if="${InvalidParentsInfo.gender == '2'}">女</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="fourth">
             <ul>
@@ -187,6 +251,65 @@
 <script src="../js/echarts.min.js"></script>
 <script src="../js/StudentEacher.js"></script>
 <script src="../js/StudentInfo.js"></script>
+<script type="text/javascript">
+    function toclickinvalid(userCode,userAuthority){
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/cancelUser',
+            data: {'userCode':userCode},
+            success: function (result) {
+                var json = eval("("+result+")");
+                toastr.success(json.msg);
+                if (json.success){
+                    if (userAuthority == '1'){
+                        $('#student').load(location.href+" #student");
+                        $('#parents').load(location.href+" #parents");
+                        $('#home').load(location.href+" #home");
+                        $('#messages').load(location.href+" #messages");
+                    } else if (userAuthority == '2'){
+                        $('#profile').load(location.href+" #profile");
+                        $('#teacher').load(location.href+" #teacher");
+                    } else {
+                        $('#student').load(location.href+" #student");
+                        $('#parents').load(location.href+" #parents");
+                        $('#messages').load(location.href+" #messages");
+                    }
+                } else {
+                    toastr.error(json.msg);
+                }
+            },
+            error:function () {
+                toastr.error("网络延迟较大，请重试");
+            }
+        });
+    }
+    
+    function createUser() {
+        $.ajax({
+            type: 'post',
+            dataType: "text",
+            url: '/createUser',
+            data: $('#createUser').serialize(),
+            success: function (result) {
+                var json = eval("("+result+")");
+                toastr.success(json.msg);
+                if (json.success){
+                    if (userAuthority == '1'){
+                        $('#student').load(location.href+" #student");
+                    } else if (userAuthority == '2'){
+                        $('#teacher').load(location.href+" #teacher");
+                    }
+                } else {
+                    toastr.error(json.msg);
+                }
+            },
+            error:function () {
+                toastr.error("网络延迟较大，请重试");
+            }
+        });
+    }
+</script>
 
 </body>
 </html>

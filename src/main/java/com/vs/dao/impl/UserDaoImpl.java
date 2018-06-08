@@ -83,4 +83,19 @@ public class UserDaoImpl implements UserDao {
     public List<User> findUserByAuthority(String authority) {
         return userMapper.findUserByAuthority(authority);
     }
+
+    @Override
+    public int updateByPrimaryKeySelective(User record) {
+        return userMapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public String findMaxStudentCode(String authority) {
+        return userMapper.findMaxStudentCode(authority);
+    }
+
+    @Override
+    public List<User> findInvalidUser(String authority) {
+        return userMapper.findInvalidUser(authority);
+    }
 }

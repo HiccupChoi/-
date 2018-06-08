@@ -22,4 +22,6 @@ public interface UserService {
     List<User> findStudentByClass(Integer classId);
 
     List<User> findUserByAuthority(String authority);
+
+    List<User> findInvalidUser(String authority);
 }

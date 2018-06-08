@@ -127,6 +127,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Result createUser(User user) {
+        //获取当前数据库最大学号
+        String maxStudentCode = userDao.findMaxStudentCode(user.getAuthority());
+        String newStudentCode = (Long.parseLong(maxStudentCode) + 1) + "";
+        user.setUserCode(newStudentCode);
         if(user.getAuthority().equals("1")){
             //使用UUID生成用户激活码
             String uuid = UUID.randomUUID().toString();
@@ -147,7 +151,7 @@ public class UserServiceImpl implements UserService {
             result.setSuccess(false);
             result.setMsg("创建"+user.getUserName() + ( user.getAuthority().equals("1") ? "同学" : "教师" ) + "失败");
         }
-        return null;
+        return result;
     }
 
     /**
@@ -160,21 +164,30 @@ public class UserServiceImpl implements UserService {
         int count = userDao.cancelUser(user.getUserId());
         Result result = new Result();
         //账号无效化成功并激活码被使用过，无效化其双亲账号
-        if (count > 0 && user.getTimes() < 2){
-            for (int i = 0; i < 2; i++) {
-                String parentUserCode = 4 + i + userCode.substring(1);
-                user = userDao.selectByUserCode(parentUserCode);
-                if (user != null){
-                    userDao.cancelUser(user.getUserId());
+        if (count > 0){
+            if (user.getTimes() < 2){
+                for (int i = 0; i < 2; i++) {
+                    String parentUserCode = 4 + i + userCode.substring(1);
+                    User parents = userDao.selectByUserCode(parentUserCode);
+                    if (parents != null){
+                        userDao.cancelUser(parents.getUserId());
+                    }
                 }
+            }
+            //无效化父母账号,将子女激活码次数回增
+            if (user.getAuthority().equals("4")){
+                String studentUserCode = 1 + userCode.substring(1);
+                User student = userDao.selectByUserCode(studentUserCode);
+                student.setTimes(student.getTimes()+1);
+                userDao.updateByPrimaryKeySelective(student);
             }
             result.setStatus(0);
             result.setSuccess(true);
-            result.setMsg("已成功删除" + user.getUserName() + ( user.getAuthority().equals("1") ? "，及其父母账号！":"！" ));
+            result.setMsg("已成功无效化" + user.getUserName() + ( (user.getTimes() < 2) ? "，及其父母账号！": (user.getAuthority().equals("4")? "同学的家长!":"！" )));
         } else {
             result.setStatus(1);
             result.setSuccess(false);
-            result.setMsg("删除失败！" );
+            result.setMsg("无效化失败！" );
         }
         return result;
     }
@@ -192,6 +205,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findUserByAuthority(String authority) {
         return userDao.findUserByAuthority(authority);
+    }
+
+    @Override
+    public List<User> findInvalidUser(String authority) {
+        return userDao.findInvalidUser(authority);
     }
 
 }

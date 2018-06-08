@@ -44,6 +44,15 @@
         order by user_code
     </select>
 
+    <select id="findInvalidUser"  resultType="com.vs.entity.User" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where authority = #{authority}
+        and dl = 1
+        order by user_code
+    </select>
+
     <select id="checkThreeCode"  resultType="java.lang.Integer" parameterType="com.vs.entity.User" >
         select
         count(*)
@@ -67,6 +76,14 @@
         where class_id = #{classId,jdbcType=INTEGER}
         and dl = 0 AND authority = 1
         order by user_id
+    </select>
+    <select id="findMaxStudentCode" resultType="java.lang.String" parameterType="java.lang.String" >
+        select
+        user_code
+        from user
+        where authority = #{authority,jdbcType=VARCHAR}
+        ORDER BY user_code DESC
+        LIMIT 0,1
     </select>
     <update id="subUserTimesOne" parameterType="com.vs.entity.User" >
         update user

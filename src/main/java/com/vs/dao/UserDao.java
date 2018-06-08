@@ -89,5 +89,30 @@ public interface UserDao {
      */
     List<User> findStudentsByClassId(Integer classId);
 
+    /**
+     * 查找某一权限所有用户
+     * @param authority
+     * @return
+     */
     List<User> findUserByAuthority(String authority);
+
+    /**
+     * 更新用户信息
+     * @param record
+     * @return
+     */
+    int updateByPrimaryKeySelective(User record);
+
+    /**
+     * 查找某一权限用户最大code
+     * @param authority
+     * @return
+     */
+    String findMaxStudentCode(String authority);
+
+    /**
+     * 查找所有无效化人员(账号)
+     * @return
+     */
+    List<User> findInvalidUser(String authority);
 }

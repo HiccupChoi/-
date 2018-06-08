@@ -58,4 +58,8 @@ public interface UserMapper {
     int cancelUser(@Param("userId") int userId);
 
     List<User> findUserByAuthority(String authority);
+
+    String findMaxStudentCode(String authority);
+
+    List<User> findInvalidUser(String authority);
 }

@@ -98,7 +98,6 @@ $('.red_button').click(function() {
             success: function (result) {
                 var json = eval("("+result+")");
                 if (json.success){
-                    alert(json.msg);
                     location.reload();
                 }else{
                     document.getElementById("userspan").innerHTML = json.msg;

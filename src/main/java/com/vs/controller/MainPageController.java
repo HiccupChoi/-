@@ -152,8 +152,23 @@ public class MainPageController {
                 teach.get(i).setClassName(userClassMap.get(teach.get(i).getClassId()).getClassName());
             }
             model.addAttribute("teach",teach);
-            List<User> preants = userService.findUserByAuthority("3");
+            List<User> preants = userService.findUserByAuthority("4");
             model.addAttribute("preants",preants);
+
+            List<User> InvalidStudent =  userService.findInvalidUser("1");
+            for (int i = 0; i < InvalidStudent.size(); i++) {
+                InvalidStudent.get(i).setClassName(userClassMap.get(InvalidStudent.get(i).getClassId()).getClassName());
+            }
+            model.addAttribute("InvalidStudent",InvalidStudent);
+
+            List<User> InvalidTeacher =  userService.findInvalidUser("2");
+            for (int i = 0; i < InvalidTeacher.size(); i++) {
+                InvalidTeacher.get(i).setClassName(userClassMap.get(InvalidTeacher.get(i).getClassId()).getClassName());
+            }
+            model.addAttribute("InvalidTeacher",InvalidTeacher);
+
+            List<User> InvalidParents =  userService.findInvalidUser("4");
+            model.addAttribute("InvalidParents",InvalidParents);
         }
 
 
@@ -261,6 +276,4 @@ public class MainPageController {
 
         return resultList;
     }
-
-
 }
