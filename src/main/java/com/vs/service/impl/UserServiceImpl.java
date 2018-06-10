@@ -70,21 +70,28 @@ public class UserServiceImpl implements UserService {
         user.setUserName(UserName);
         user.setActivationCode(activationCode);
         Result result = new Result();
-        Integer count =userDao.checkThreeCode(user);
-        Integer times = userDao.checkThreeCodeTimes(userCode);
-        if (count > 0 && times > 0){
-            parentCode = (6 - times) + userCode.substring(1);
-            result.setStatus(0);
-            result.setSuccess(true);
-            result.setMsg("三码匹配成功，您即将创建的账号为："+parentCode+"!");
-        } else if (times == 0){
+        Integer userCount = userDao.findUserByCode(userCode);
+        if (userCount > 0){
+            Integer count =userDao.checkThreeCode(user);
+            Integer times = userDao.checkThreeCodeTimes(userCode);
+            if (count > 0 && times > 0){
+                parentCode = (6 - times) + userCode.substring(1);
+                result.setStatus(0);
+                result.setSuccess(true);
+                result.setMsg("三码匹配成功，您即将创建的账号为："+parentCode+"!");
+            } else if (times == 0){
+                result.setStatus(1);
+                result.setSuccess(false);
+                result.setMsg("该生激活码次数已经使用两次！");
+            } else {
+                result.setStatus(1);
+                result.setSuccess(false);
+                result.setMsg("三码匹配失败，请仔细检查您的输入！");
+            }
+        } else{
             result.setStatus(1);
             result.setSuccess(false);
-            result.setMsg("该生激活码次数已经使用两次！");
-        } else {
-            result.setStatus(1);
-            result.setSuccess(false);
-            result.setMsg("三码匹配失败，请仔细检查您的输入！");
+            result.setMsg("您输入的账号不存在或已被删除！");
         }
         return result;
     }

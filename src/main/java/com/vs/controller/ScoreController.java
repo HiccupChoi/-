@@ -343,7 +343,7 @@ public class ScoreController {
                 }
                 sum += scoreInt;
                 score.setScore(scoreInt);
-                score.setOnwerId(18);
+                score.setOnwerId(13);
                 scoreService.AddScore(score);
             }
             score.setScore(sum);

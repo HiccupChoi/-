@@ -62,7 +62,7 @@
                                 <th>学号</th>
                                 <th>姓名</th>
                                 <th>性别</th>
-                                <th>班级</th>
+                                <th style="width: 150px">班级</th>
                                 <th>激活码</th>
                                 <th  style="text-align: center">次数</th>
                                 <th>操作</th>
@@ -162,7 +162,7 @@
                             </select>
                         </div>
                     </div>
-                    <button class="btn btn-default" style="width: 120px; margin: 0 auto;" onclick="createUser()">确认新增</button>
+                    <span class="btn btn-default" style="width: 120px; margin: 0 auto;" onclick="createUser()">确认新增</span>
                 </div>
             </form>
         </div>
@@ -286,28 +286,30 @@
     }
     
     function createUser() {
-        $.ajax({
-            type: 'post',
-            dataType: "text",
-            url: '/createUser',
-            data: $('#createUser').serialize(),
-            success: function (result) {
-                var json = eval("("+result+")");
-                toastr.success(json.msg);
-                if (json.success){
-                    if (userAuthority == '1'){
+        if(!(/^[\u4e00-\u9fa5]{2,4}$/).test($("#exampleInputAmount").val())){
+            toastr.error("用户名必须为2-4位中文");
+            return false;
+        }else {
+            $.ajax({
+                type: 'post',
+                dataType: "text",
+                url: '/createUser',
+                data: $('#createUser').serialize(),
+                success: function (result) {
+                    var json = eval("("+result+")");
+                    toastr.success(json.msg);
+                    if (json.success){
                         $('#student').load(location.href+" #student");
-                    } else if (userAuthority == '2'){
                         $('#teacher').load(location.href+" #teacher");
+                    } else {
+                        toastr.error(json.msg);
                     }
-                } else {
-                    toastr.error(json.msg);
+                },
+                error:function () {
+                    toastr.error("网络延迟较大，请重试");
                 }
-            },
-            error:function () {
-                toastr.error("网络延迟较大，请重试");
-            }
-        });
+            });
+        }
     }
 </script>
 
